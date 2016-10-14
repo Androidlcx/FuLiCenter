@@ -6,6 +6,7 @@ import android.util.Log;
  * Created by clawpo on 16/9/20.
  */
 public class L {
+    //logcat开关
     public static boolean isDebug = true;
     private static final String TAG = "fulicenter";
 
