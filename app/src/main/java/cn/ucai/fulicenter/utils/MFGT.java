@@ -4,9 +4,8 @@ import android.app.Activity;
 import android.content.Intent;
 
 import cn.ucai.fulicenter.R;
-import cn.ucai.fulicenter.activity.MainActivity;
-
-
+import cn.ucai.fulicenter.acitivity.MainActivity;
+//闪屏的实现封装
 public class MFGT {
     public static void finish(Activity activity){
         activity.finish();

@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.utils.MFGT;
 
 public class Splash2Activity extends AppCompatActivity {
     //闪屏的时间
@@ -29,8 +30,9 @@ public class Splash2Activity extends AppCompatActivity {
                if (sleepTime-costTime>0){
                    SystemClock.sleep(sleepTime-costTime);
                }
-               startActivity(new Intent(Splash2Activity.this,MainActivity.class));
-               finish();//结束闪屏
+               //调用utils封装类中的MFGT闪屏实现方法
+               MFGT.gotoMainActivity(Splash2Activity.this);
+               MFGT.finish(Splash2Activity.this);//结束闪屏
            }
        }.start();
     }
