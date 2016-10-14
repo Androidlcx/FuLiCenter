@@ -30,6 +30,7 @@ public class Splash2Activity extends AppCompatActivity {
                    SystemClock.sleep(sleepTime-costTime);
                }
                startActivity(new Intent(Splash2Activity.this,MainActivity.class));
+               finish();//结束闪屏
            }
        }.start();
     }
