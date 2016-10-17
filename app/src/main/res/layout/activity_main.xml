@@ -1,86 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/mainLayout"
+    tools:context=".activity.MainActivity"
     android:background="@color/list_background">
-    <!--菜单栏底部布局文件-->
-    <LinearLayout
-        android:id="@+id/main_bottom"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/bottom_bar_taobao_bg"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-        <!--互斥按钮-->
-    <RadioButton
-             android:id="@+id/xp"
-             android:layout_weight="1"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:text="新品"
-             android:checked="true"
-             android:drawableTop="@drawable/selector_menu_item_new_good"
-             android:button="@null"
-             android:gravity="center"
-             android:textColor="@color/main_botton_text_color"/>
-    <RadioButton
-        android:id="@+id/jx"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="精选"
-        android:drawableTop="@drawable/selector_menu_item_boutique"
-        android:button="@null"
-        android:gravity="center"
-        android:textColor="@color/main_botton_text_color"/>
-    <RadioButton
-        android:id="@+id/fl"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="分类"
-        android:drawableTop="@drawable/selector_menu_item_category"
-        android:button="@null"
-        android:gravity="center"
-        android:textColor="@color/main_botton_text_color"/>
-   <!--购物车的布局-->
+
     <RelativeLayout
-        android:layout_width="50dp"
-        android:layout_height="wrap_content">
+
+        android:id="@+id/rlayout"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <RadioGroup
+            android:id="@+id/rg_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/xp"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/selector_menu_item_boutique"
+                android:text="新品"
+                android:textColor="@color/main_botton_text_color"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:button="@null" />
+            <RadioButton
+                android:id="@+id/jx"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/selector_menu_item_new_good"
+                android:text="精选"
+                android:textColor="@color/main_botton_text_color"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:button="@null" />
+            <RadioButton
+                android:id="@+id/fl"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/selector_menu_item_category"
+                android:text="分类"
+                android:textColor="@color/main_botton_text_color"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:button="@null" />
+
+            <RadioButton
+                android:id="@+id/me"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/selector_menu_item_personal_center"
+                android:text="个人中心"
+                android:textColor="@color/main_botton_text_color"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:button="@null" />
+            <RadioButton
+                android:layout_weight="1"
+                android:id="@+id/gwc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:drawableTop="@drawable/selector_menu_item_cart"
+                android:text="购物车"
+                android:textColor="@color/main_botton_text_color"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:button="@null" />
+
+        </RadioGroup>
+
         <TextView
             android:id="@+id/tvcart"
-            android:layout_alignParentRight="true"
-            android:textSize="10sp"
-            android:textColor="#fff"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@drawable/cart_hint"
-            android:layout_marginLeft="3dp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="10"/>
-        <RadioButton
-            android:id="@+id/gwc"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="购物车"
-            android:drawableTop="@drawable/selector_menu_item_cart"
-            android:button="@null"
-            android:gravity="center"
-            android:textColor="@color/main_botton_text_color"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true" />
+            android:textColor="@color/black"
+            android:layout_alignTop="@id/rg_menu"
+            android:layout_alignRight="@id/rg_menu"
+            android:text="10" />
     </RelativeLayout>
-    <RadioButton
-        android:id="@+id/me"
-        android:layout_weight="1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="个人中心"
-        android:drawableTop="@drawable/selector_menu_item_personal_center"
-        android:button="@null"
-        android:gravity="center"
-        android:textColor="@color/main_botton_text_color"/>
-    </LinearLayout>
+
+
+    <View
+        android:id="@+id/id_xian"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@id/rlayout"
+        android:background="#2f2f29"
+        android:layout_marginBottom="5dp" />
+
+    <RelativeLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/id_xian">
+
+    </RelativeLayout>
 </RelativeLayout>
