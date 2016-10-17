@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setRadioButtonStatus() {
+        L.e("index="+index);
         for (int i = 0;i<rbs.length;i++){
             if (i == index){
                 rbs[i].setChecked(true);
