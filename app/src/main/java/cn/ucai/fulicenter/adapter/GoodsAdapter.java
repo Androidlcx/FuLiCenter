@@ -49,6 +49,7 @@ public class GoodsAdapter extends RecyclerView.Adapter {
             GoodsViewHolder vh = (GoodsViewHolder) holder;
             NewGoodsBean goods = mList.get(position);
             //设置图片
+            ImageLoader.downloadImg(mContext,vh.ivGoodsThumb,goods.getGoodsThumb());
             vh.tvGoodsName.setText(goods.getGoodsName());//商品名字
             vh.tvGoodsPrice.setText(goods.getCurrencyPrice());//商品价钱
         }
