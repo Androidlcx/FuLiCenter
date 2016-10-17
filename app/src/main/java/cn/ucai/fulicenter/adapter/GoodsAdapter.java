@@ -2,12 +2,15 @@ package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView.Adapter;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
@@ -20,18 +23,19 @@ import cn.ucai.fulicenter.utils.ImageLoader;
 /**
  * Created by Administrator on 2016/10/17.
  */
-public class GoodsAdapter extends RecyclerView.Adapter {
+public class GoodsAdapter extends Adapter {
     Context mContext;
     List<NewGoodsBean> mList;
 
     public GoodsAdapter(Context Context, List<NewGoodsBean> List) {
-        this.mContext = Context;
-        this.mList = List;
+        mContext = Context;
+        mList = new ArrayList<>();
+        mList.addAll(List);
     }
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //绑定一个布局文件
-        RecyclerView.ViewHolder holder = null;
+        ViewHolder holder = null;
         if (viewType == I.TYPE_FOOTER) {
             holder = new FooterViewHolder(View.inflate(mContext, R.layout.item_footer, null));
         } else {
@@ -41,7 +45,7 @@ public class GoodsAdapter extends RecyclerView.Adapter {
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
         //填充数据
         if (getItemViewType(position) == I.TYPE_FOOTER){
 
@@ -68,7 +72,15 @@ public class GoodsAdapter extends RecyclerView.Adapter {
         return I.TYPE_ITEM;
     }
 
-    static class GoodsViewHolder extends RecyclerView.ViewHolder{
+    public void initData(ArrayList<NewGoodsBean> list) {
+        if (mList != null){
+            mList.clear();
+        }
+        mList.addAll(list);
+        notifyDataSetChanged();//刷新
+    }
+
+    static class GoodsViewHolder extends ViewHolder {
         @Bind(R.id.ivGoodsThumb)
         ImageView ivGoodsThumb;
         @Bind(R.id.tvGoodsName)
@@ -84,7 +96,7 @@ public class GoodsAdapter extends RecyclerView.Adapter {
         }
     }
 
-    static class FooterViewHolder extends RecyclerView.ViewHolder{
+    static class FooterViewHolder extends ViewHolder{
         @Bind(R.id.tvFooter)
         TextView tvFooter;
 
