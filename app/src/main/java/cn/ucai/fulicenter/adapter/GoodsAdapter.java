@@ -15,6 +15,7 @@ import butterknife.ButterKnife;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
+import cn.ucai.fulicenter.utils.ImageLoader;
 
 /**
  * Created by Administrator on 2016/10/17.
