@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:text="@string/now_refresh"
             android:textStyle="bold"
-            android:textSize="18sp"
+            android:textSize="12sp"
             android:gravity="center_horizontal"/>
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv"

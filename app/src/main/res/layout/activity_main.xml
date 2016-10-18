@@ -29,8 +29,10 @@
                 android:text="新品"
                 android:textColor="@color/main_botton_text_color"
                 android:gravity="center"
-                android:textSize="20sp"
-                android:button="@null" />
+                android:textSize="15sp"
+                android:drawablePadding="4dp"
+                android:button="@null"
+                android:checked="true"/>
             <RadioButton
                 android:id="@+id/jx"
                 android:layout_weight="1"
@@ -40,7 +42,8 @@
                 android:text="精选"
                 android:textColor="@color/main_botton_text_color"
                 android:gravity="center"
-                android:textSize="20sp"
+                android:textSize="15sp"
+                android:drawablePadding="4dp"
                 android:button="@null" />
             <RadioButton
                 android:id="@+id/fl"
@@ -51,7 +54,8 @@
                 android:text="分类"
                 android:textColor="@color/main_botton_text_color"
                 android:gravity="center"
-                android:textSize="20sp"
+                android:textSize="15sp"
+                android:drawablePadding="4dp"
                 android:button="@null" />
 
             <RadioButton
@@ -63,18 +67,20 @@
                 android:text="个人中心"
                 android:textColor="@color/main_botton_text_color"
                 android:gravity="center"
-                android:textSize="20sp"
+                android:textSize="15sp"
+                android:drawablePadding="4dp"
                 android:button="@null" />
             <RadioButton
                 android:layout_weight="1"
                 android:id="@+id/gwc"
+                android:drawablePadding="4dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:drawableTop="@drawable/selector_menu_item_cart"
                 android:text="购物车"
                 android:textColor="@color/main_botton_text_color"
                 android:gravity="center"
-                android:textSize="20sp"
+                android:textSize="15sp"
                 android:button="@null" />
 
         </RadioGroup>
@@ -84,7 +90,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/cart_hint"
-            android:textColor="@color/black"
+            android:textColor="#fff"
             android:layout_alignTop="@id/rg_menu"
             android:layout_alignRight="@id/rg_menu"
             android:text="10" />
