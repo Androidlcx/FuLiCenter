@@ -26,12 +26,25 @@ import cn.ucai.fulicenter.utils.ImageLoader;
 public class GoodsAdapter extends Adapter {
     Context mContext;
     List<NewGoodsBean> mList;
+    boolean isMore;
+    private  int footString;
+
+    public boolean isMore() {
+        return isMore;
+    }
+
+    public void setMore(boolean more) {
+        isMore = more;
+        notifyDataSetChanged();
+    }
 
     public GoodsAdapter(Context Context, List<NewGoodsBean> List) {
         mContext = Context;
         mList = new ArrayList<>();
         mList.addAll(List);
+
     }
+
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //绑定一个布局文件
@@ -48,7 +61,8 @@ public class GoodsAdapter extends Adapter {
     public void onBindViewHolder(ViewHolder holder, int position) {
         //填充数据
         if (getItemViewType(position) == I.TYPE_FOOTER){
-
+                FooterViewHolder vh = (FooterViewHolder) holder;
+                vh.tvFooter.setText(getFootString());
         }else {
             GoodsViewHolder vh = (GoodsViewHolder) holder;
             NewGoodsBean goods = mList.get(position);
@@ -57,6 +71,10 @@ public class GoodsAdapter extends Adapter {
             vh.tvGoodsName.setText(goods.getGoodsName());//商品名字
             vh.tvGoodsPrice.setText(goods.getCurrencyPrice());//商品价钱
         }
+    }
+
+    private int getFootString() {
+        return isMore?R.string.load_more : R.string.no_more;
     }
 
     @Override

@@ -10,7 +10,7 @@
             android:id="@+id/rlayout"
             android:layout_alignParentBottom="true"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
+            android:layout_height="45dp">
 <!--RadioGroup互斥按钮的布局-->
         <RadioGroup
             android:id="@+id/rg_menu"

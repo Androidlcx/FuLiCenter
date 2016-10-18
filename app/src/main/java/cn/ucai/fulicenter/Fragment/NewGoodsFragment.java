@@ -22,6 +22,7 @@ import cn.ucai.fulicenter.adapter.GoodsAdapter;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
+import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.L;
 
@@ -53,20 +54,32 @@ public class NewGoodsFragment extends Fragment {
         initData();
         return layout;
     }
-
     private void initData() {
         //页面显示，网络请求
         NetDao.downloadNewGoods(mContext, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
+                srl.setRefreshing(false);//不在刷新
+                tvRefresh.setVisibility(View.GONE);//提示不可见
+                mAdapter.setMore(true);
+                L.e("result"+result);
                 if (result != null && result.length>0){
                     ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
                     mAdapter.initData(list);
+                    if (list.size()<I.PAGE_SIZE_DEFAULT){
+                        mAdapter.setMore(false);
+                    }
+                }else {
+                        mAdapter.setMore(false);
                 }
             }
 
             @Override
             public void onError(String error) {
+                srl.setRefreshing(false);
+                tvRefresh.setVisibility(View.GONE);
+                mAdapter.setMore(false);
+                CommonUtils.showLongToast(error);
                 L.e("error"+error);
             }
         });
