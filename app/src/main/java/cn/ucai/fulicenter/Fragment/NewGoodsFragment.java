@@ -17,6 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.View.SpaceItemDecoration;
 import cn.ucai.fulicenter.acitivity.MainActivity;
 import cn.ucai.fulicenter.adapter.GoodsAdapter;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
@@ -150,6 +151,7 @@ public class NewGoodsFragment extends Fragment {
         rv.setLayoutManager(glm);
         rv.setHasFixedSize(true);//修复图片大小
         rv.setAdapter(mAdapter);
+        rv.addItemDecoration(new SpaceItemDecoration(12));//设置边距
     }
     @Override
     public void onDestroyView() {
