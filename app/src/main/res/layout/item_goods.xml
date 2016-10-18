@@ -6,7 +6,8 @@
     android:id="@+id/layout_goods"
     android:background="@color/white"
     android:layout_margin="15dp"
-    android:weightSum="1">
+    android:weightSum="1"
+    android:padding="10dp">
     <!--商品位置布局-->
     <!--图片布局-->
 <ImageView

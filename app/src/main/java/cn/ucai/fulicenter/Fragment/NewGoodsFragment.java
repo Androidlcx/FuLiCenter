@@ -42,6 +42,7 @@ public class NewGoodsFragment extends Fragment {
     ArrayList<NewGoodsBean>mList;
 
     int pageId = 1;
+    GridLayoutManager glm;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -52,9 +53,29 @@ public class NewGoodsFragment extends Fragment {
         mAdapter = new GoodsAdapter(mContext,mList);
         initView();
         initData();
+        setListener();
         return layout;
     }
-    private void initData() {
+
+    private void setListener() {
+        setPullUpListener();
+        setPullDownListener();
+    }
+//下拉刷新
+    private void setPullDownListener() {
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                srl.setRefreshing(true);
+                tvRefresh.setVisibility(View.VISIBLE);
+                pageId = 1 ;
+                downloadNewGoods(I.ACTION_PULL_DOWN);
+            }
+        });
+
+    }
+
+    private void downloadNewGoods(final int action) {
         //页面显示，网络请求
         NetDao.downloadNewGoods(mContext, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
@@ -65,12 +86,17 @@ public class NewGoodsFragment extends Fragment {
                 L.e("result"+result);
                 if (result != null && result.length>0){
                     ArrayList<NewGoodsBean> list = ConvertUtils.array2List(result);
+                    if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN){
+                        mAdapter.initData(list);
+                    }else {
+                        mAdapter.addData(list);
+                    }
                     mAdapter.initData(list);
                     if (list.size()<I.PAGE_SIZE_DEFAULT){
                         mAdapter.setMore(false);
                     }
                 }else {
-                        mAdapter.setMore(false);
+                    mAdapter.setMore(false);
                 }
             }
 
@@ -84,6 +110,33 @@ public class NewGoodsFragment extends Fragment {
             }
         });
     }
+    //上拉刷新
+    private void setPullUpListener() {
+        rv.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+                //拿出最后一条
+                int lastPosition = glm.findLastVisibleItemPosition();
+                if (newState == RecyclerView.SCROLL_STATE_IDLE
+                        && lastPosition == mAdapter.getItemCount()-1
+                        && mAdapter.isMore()){
+                    pageId++;
+                    downloadNewGoods(I.ACTION_PULL_UP);
+                }
+
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+            }
+        });
+    }
+
+    private void initData() {
+       downloadNewGoods(I.ACTION_DOWNLOAD);
+    }
 
     private void initView() {
         /*下拉刷新小圆圈的颜色*/
@@ -93,7 +146,7 @@ public class NewGoodsFragment extends Fragment {
                 getResources().getColor(R.color.google_red),
                 getResources().getColor(R.color.google_yellow)
         );
-        GridLayoutManager glm = new GridLayoutManager(mContext, I.COLUM_NUM);
+        glm = new GridLayoutManager(mContext, I.COLUM_NUM);
         rv.setLayoutManager(glm);
         rv.setHasFixedSize(true);//修复图片大小
         rv.setAdapter(mAdapter);
