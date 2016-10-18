@@ -3,6 +3,7 @@ package cn.ucai.fulicenter.net;
 import android.content.Context;
 
 import cn.ucai.fulicenter.I;
+import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 
 /**
@@ -18,21 +19,30 @@ public class NetDao {
                 .targetClass(NewGoodsBean[].class)
                 .execute(listener);
     }
-    public void temp(Context context){
+//    public void temp(Context context){
+//        OkHttpUtils utils = new OkHttpUtils(context);
+//        utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
+//                .addParam(I.PAGE_SIZE,String.valueOf(20))
+//                .targetClass(NewGoodsBean.class)
+//                .execute(new OkHttpUtils.OnCompleteListener() {
+//                    @Override
+//                    public void onSuccess(Object result) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(String error) {
+//
+//                    }
+//                });
+//    }
+    //数据请求
+    public static void downloadGoodsDetail(Context context, int goodsId, OkHttpUtils.OnCompleteListener<GoodsDetailsBean> listener){
         OkHttpUtils utils = new OkHttpUtils(context);
-        utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
-                .addParam(I.PAGE_SIZE,String.valueOf(20))
-                .targetClass(NewGoodsBean.class)
-                .execute(new OkHttpUtils.OnCompleteListener() {
-                    @Override
-                    public void onSuccess(Object result) {
+        utils.setRequestUrl(I.REQUEST_FIND_GOOD_DETAILS)
+                .addParam(I.GoodsDetails.KEY_GOODS_ID,String.valueOf(goodsId))
+                .targetClass(GoodsDetailsBean.class)
+                .execute(listener);//完成数据请求
 
-                    }
-
-                    @Override
-                    public void onError(String error) {
-
-                    }
-                });
     }
 }
