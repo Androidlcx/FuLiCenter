@@ -5,21 +5,20 @@
     android:layout_height="match_parent"
     tools:context=".activity.MainActivity"
     android:background="@color/list_background">
-
-    <RelativeLayout
-
-        android:id="@+id/rlayout"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_height="50dp">
-
+<!--底部菜单栏的相对布局-->
+        <RelativeLayout
+            android:id="@+id/rlayout"
+            android:layout_alignParentBottom="true"
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+<!--RadioGroup互斥按钮的布局-->
         <RadioGroup
             android:id="@+id/rg_menu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:orientation="horizontal">
-
+<!--新品-->
             <RadioButton
                 android:id="@+id/xp"
                 android:layout_weight="1"
@@ -33,6 +32,7 @@
                 android:drawablePadding="4dp"
                 android:button="@null"
                 android:checked="true"/>
+<!--精选-->
             <RadioButton
                 android:id="@+id/jx"
                 android:layout_weight="1"
@@ -45,6 +45,7 @@
                 android:textSize="15sp"
                 android:drawablePadding="4dp"
                 android:button="@null" />
+<!--分类-->
             <RadioButton
                 android:id="@+id/fl"
                 android:layout_weight="1"
@@ -57,7 +58,7 @@
                 android:textSize="15sp"
                 android:drawablePadding="4dp"
                 android:button="@null" />
-
+<!--个人中心-->
             <RadioButton
                 android:id="@+id/me"
                 android:layout_weight="1"
@@ -70,6 +71,7 @@
                 android:textSize="15sp"
                 android:drawablePadding="4dp"
                 android:button="@null" />
+<!--购物车-->
             <RadioButton
                 android:layout_weight="1"
                 android:id="@+id/gwc"
@@ -84,32 +86,31 @@
                 android:button="@null" />
 
         </RadioGroup>
+<!--购物车内物品的数量显示-->
+            <TextView
+                android:id="@+id/tvcart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/cart_hint"
+                android:textColor="#fff"
+                android:layout_alignTop="@id/rg_menu"
+                android:layout_alignRight="@id/rg_menu"
+                android:text="10" />
+        </RelativeLayout>
+<!--底部菜单栏和顶部页面显示分隔线-->
+        <View
+            android:id="@+id/id_xian"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_above="@id/rlayout"
+            android:background="#FF87A3F7"
+            android:layout_marginBottom="5dp" />
+<!--顶部页面显示的相对布局-->
+      <RelativeLayout
+           android:id="@+id/fragment_container"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_above="@id/id_xian">
 
-        <TextView
-            android:id="@+id/tvcart"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/cart_hint"
-            android:textColor="#fff"
-            android:layout_alignTop="@id/rg_menu"
-            android:layout_alignRight="@id/rg_menu"
-            android:text="10" />
-    </RelativeLayout>
-
-
-    <View
-        android:id="@+id/id_xian"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_above="@id/rlayout"
-        android:background="#2f2f29"
-        android:layout_marginBottom="5dp" />
-
-    <RelativeLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@id/id_xian">
-
-    </RelativeLayout>
+      </RelativeLayout>
 </RelativeLayout>
