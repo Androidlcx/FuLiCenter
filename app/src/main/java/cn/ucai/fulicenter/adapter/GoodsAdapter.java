@@ -22,6 +22,7 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.acitivity.GoodsDetailActivity;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.utils.MFGT;
 
 /**
  * Created by Administrator on 2016/10/17.
@@ -125,8 +126,9 @@ public class GoodsAdapter extends Adapter {
         @OnClick(R.id.layout_goods)
         public void onGoodsItemCick(){
             int goodsId = (int) layoutGoods.getTag();
-            mContext.startActivity(new Intent(mContext, GoodsDetailActivity.class)
-                    .putExtra(I.GoodsDetails.KEY_GOODS_ID,goodsId));
+            MFGT.gotoGoodsDetailsActivity(mContext,goodsId);
+//            mContext.startActivity(new Intent(mContext, GoodsDetailActivity.class)
+//                    .putExtra(I.GoodsDetails.KEY_GOODS_ID,goodsId));
         }
     }
 
