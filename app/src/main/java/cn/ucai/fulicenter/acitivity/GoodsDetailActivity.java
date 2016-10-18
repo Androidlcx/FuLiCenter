@@ -2,21 +2,25 @@ package cn.ucai.fulicenter.acitivity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.webkit.WebView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.View.FlowIndicator;
 import cn.ucai.fulicenter.View.SlideAutoLoopView;
+import cn.ucai.fulicenter.bean.AlbumsBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
 
 public class GoodsDetailActivity extends AppCompatActivity {
 
@@ -85,11 +89,40 @@ public class GoodsDetailActivity extends AppCompatActivity {
         tvGoodName.setText(details.getGoodsName());
         tvGoodPriceCurrent.setText(details.getCurrencyPrice());
         tvGoodPriceShop.setText(details.getShopPrice());
-        //轮播图片以及外部wieb
-
+        //轮播图片以及外部webView
+        salv.startPlayLoop(indicator,getAlbumImUrl(details),getAlbumImgCount(details));
+        //商品简介webView加载数据
+        wvGoodsBrief.loadDataWithBaseURL(null,details.getGoodsBrief(),I.TEXT_HTML,I.UTF_8,null);
     }
 
+    private int getAlbumImgCount(GoodsDetailsBean details) {
+        if (details.getProperties() != null && details.getProperties().length>0){
+            return details.getProperties()[0].getAlbums().length;
+            }
+        return 0;
+    }
+
+    private String[] getAlbumImUrl(GoodsDetailsBean details) {
+        String[] urls = new String[]{};
+        if (details.getProperties() != null && details.getProperties().length>0){
+            AlbumsBean [] albums = details.getProperties()[0].getAlbums();
+            urls = new String[albums.length];
+            for (int i = 0 ;i<albums.length;i++){
+                urls[i] = albums[i].getImgUrl();
+            }
+        }
+        return  urls;
+    }
+//顶部返回按钮
     private void initView() {
 
+    }
+    @OnClick(R.id.backClickArea)
+    public void onBackClick(){
+        MFGT.finish(this);
+    }
+    //系统返回按钮
+    public void back(View view){
+        MFGT.finish(this);
     }
 }
