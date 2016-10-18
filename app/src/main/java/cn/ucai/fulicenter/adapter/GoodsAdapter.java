@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
@@ -15,8 +16,10 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.acitivity.GoodsDetailActivity;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.utils.ImageLoader;
 
@@ -70,6 +73,7 @@ public class GoodsAdapter extends Adapter {
             ImageLoader.downloadImg(mContext,vh.ivGoodsThumb,goods.getGoodsThumb());
             vh.tvGoodsName.setText(goods.getGoodsName());//商品名字
             vh.tvGoodsPrice.setText(goods.getCurrencyPrice());//商品价钱
+            vh.layoutGoods.setTag(goods.getGoodsId());//页面跳转
         }
     }
 
@@ -103,7 +107,7 @@ public class GoodsAdapter extends Adapter {
         notifyDataSetChanged();
     }
 
-    static class GoodsViewHolder extends ViewHolder {
+     class GoodsViewHolder extends ViewHolder {
         @Bind(R.id.ivGoodsThumb)
         ImageView ivGoodsThumb;
         @Bind(R.id.tvGoodsName)
@@ -116,6 +120,13 @@ public class GoodsAdapter extends Adapter {
         GoodsViewHolder(View view){
             super(view);
             ButterKnife.bind(this, view);
+        }
+        //点击跳转页面
+        @OnClick(R.id.layout_goods)
+        public void onGoodsItemCick(){
+            int goodsId = (int) layoutGoods.getTag();
+            mContext.startActivity(new Intent(mContext, GoodsDetailActivity.class)
+                    .putExtra(I.GoodsDetails.KEY_GOODS_ID,goodsId));
         }
     }
 

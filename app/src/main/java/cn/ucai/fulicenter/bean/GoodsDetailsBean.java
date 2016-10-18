@@ -1,5 +1,7 @@
 package cn.ucai.fulicenter.bean;
 
+import java.util.Arrays;
+
 /**
  * Created by Administrator on 2016/10/13.
  */
@@ -37,6 +39,23 @@ public class GoodsDetailsBean {
     private String goodsImg;
     private long addTime;
     private String shareUrl;
+    private PropertiesBean[] properties;
+
+    public boolean isPromote() {
+        return isPromote;
+    }
+
+    public void setPromote(boolean promote) {
+        isPromote = promote;
+    }
+
+    public PropertiesBean[] getProperties() {
+        return properties;
+    }
+
+    public void setProperties(PropertiesBean[] properties) {
+        this.properties = properties;
+    }
 
     public int getId() {
         return id;
@@ -179,6 +198,7 @@ public class GoodsDetailsBean {
                 ", goodsImg='" + goodsImg + '\'' +
                 ", addTime=" + addTime +
                 ", shareUrl='" + shareUrl + '\'' +
+                ", properties=" + Arrays.toString(properties) +
                 '}';
     }
 }

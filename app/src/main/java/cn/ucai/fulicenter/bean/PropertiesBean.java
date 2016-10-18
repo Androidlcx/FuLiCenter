@@ -1,5 +1,7 @@
 package cn.ucai.fulicenter.bean;
 
+import java.util.Arrays;
+
 /**
  * Created by Administrator on 2016/10/13.
  */
@@ -21,6 +23,15 @@ public class PropertiesBean {
     private String colorCode;
     private String colorImg;
     private String colorUrl;
+    private AlbumsBean[]albums;
+
+    public AlbumsBean[] getAlbums() {
+        return albums;
+    }
+
+    public void setAlbums(AlbumsBean[] albums) {
+        this.albums = albums;
+    }
 
     public int getId() {
         return id;
@@ -91,6 +102,7 @@ public class PropertiesBean {
                 ", colorCode='" + colorCode + '\'' +
                 ", colorImg='" + colorImg + '\'' +
                 ", colorUrl='" + colorUrl + '\'' +
+                ", albums=" + Arrays.toString(albums) +
                 '}';
     }
 }
