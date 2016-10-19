@@ -30,7 +30,7 @@ import cn.ucai.fulicenter.utils.L;
 /**
  * Created by Administrator on 2016/10/17.
  */
-public class NewGoodsFragment extends Fragment {
+public class NewGoodsFragment extends BaseFragment {
     @Bind(R.id.tv_refresh)
     TextView tvRefresh;
     @Bind(R.id.rv)
@@ -47,18 +47,20 @@ public class NewGoodsFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        L.e("NewGoodsFragment.onCreateView");
         View layout = inflater.inflate(R.layout.fragment_newgoods, container, false);
         ButterKnife.bind(this, layout);
         mContext = (MainActivity) getContext();
         mList = new ArrayList<>();
         mAdapter = new GoodsAdapter(mContext,mList);
-        initView();
-        initData();
-        setListener();
+        super.onCreateView(inflater,container,savedInstanceState);
+//        initView();
+//        initData();
+//        setListener();
         return layout;
     }
-
-    private void setListener() {
+  @Override
+    protected void setListener() {
         setPullUpListener();
         setPullDownListener();
     }
@@ -134,12 +136,12 @@ public class NewGoodsFragment extends Fragment {
             }
         });
     }
-
-    private void initData() {
+    @Override
+    protected void initData() {
        downloadNewGoods(I.ACTION_DOWNLOAD);
     }
-
-    private void initView() {
+    @Override
+    protected void initView() {
         /*下拉刷新小圆圈的颜色*/
         srl.setColorSchemeColors(
                 getResources().getColor(R.color.google_blue),

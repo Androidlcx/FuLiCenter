@@ -28,7 +28,7 @@ import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.L;
 
-public class BoutiqueFragment extends Fragment {
+public class BoutiqueFragment extends BaseFragment {
     @Bind(R.id.tv_refresh)
     TextView tvRefresh;
     @Bind(R.id.rv)
@@ -48,12 +48,14 @@ public class BoutiqueFragment extends Fragment {
         mContext = (MainActivity) getContext();
         mList = new ArrayList<>();
         mAdapter = new BoutiqueAdapter(mContext,mList);
-        initView();
-        initData();//数据抓取
-        setListener();
+//        initView();
+//        initData();//数据抓取
+//        setListener();
+        super.onCreateView(inflater,container,savedInstanceState);
         return layout;
     }
-    private void setListener() {
+    @Override
+    protected void setListener() {
         setPullDownListener();
     }
     //下拉刷新
@@ -68,8 +70,8 @@ public class BoutiqueFragment extends Fragment {
         });
 
     }
-
-    private void initData() {
+    @Override
+    protected void initData() {
         downloadBoutique();
     }
     private void downloadBoutique() {
@@ -99,7 +101,8 @@ public class BoutiqueFragment extends Fragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
-    private void initView() {
+    @Override
+    protected void initView() {
         /*下拉刷新小圆圈的颜色*/
         srl.setColorSchemeColors(
                 getResources().getColor(R.color.google_blue),
