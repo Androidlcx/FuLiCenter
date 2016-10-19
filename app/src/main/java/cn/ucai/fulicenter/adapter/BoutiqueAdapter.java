@@ -29,7 +29,6 @@ public class BoutiqueAdapter extends Adapter {
     Context mContext;
     ArrayList<BoutiqueBean> mList;
     boolean isMore;
-
     public BoutiqueAdapter(Context Context, ArrayList<BoutiqueBean> list) {
         mContext = Context;
         mList = new ArrayList<>();

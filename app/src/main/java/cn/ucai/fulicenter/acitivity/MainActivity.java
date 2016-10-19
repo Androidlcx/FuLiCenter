@@ -2,6 +2,7 @@ package cn.ucai.fulicenter.acitivity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.RadioButton;
@@ -10,16 +11,12 @@ import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.fragment.BoutiqueFragment;
 import cn.ucai.fulicenter.fragment.NewGoodsFragment;
 import cn.ucai.fulicenter.utils.L;
 
 public class MainActivity extends AppCompatActivity {
 
-    int index;
-    RadioButton[] rbs;
-    Fragment[] mFragments;
-
-    NewGoodsFragment mNewGoodsFragment;
     @Bind(R.id.xp)
     RadioButton xp;
     @Bind(R.id.jx)
@@ -32,6 +29,13 @@ public class MainActivity extends AppCompatActivity {
     RadioButton gwc;
     @Bind(R.id.me)
     RadioButton me;
+
+    int index;
+    int currentIndex;
+    RadioButton[] rbs;
+    Fragment[] mFragments;
+    NewGoodsFragment mNewGoodsFragment;
+    BoutiqueFragment mBoutiqueFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,9 +50,14 @@ public class MainActivity extends AppCompatActivity {
     private void initFragment() {
         mFragments = new Fragment[5];
         mNewGoodsFragment = new NewGoodsFragment();
+        mBoutiqueFragment = new BoutiqueFragment();
+        mFragments[0] = mNewGoodsFragment;
+        mFragments[1] = mBoutiqueFragment;
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.fragment_container, mNewGoodsFragment)
+                .add(R.id.fragment_container, mBoutiqueFragment)
+                .hide(mBoutiqueFragment)//隐藏
                 .show(mNewGoodsFragment)
                 .commit();
     }
@@ -80,7 +89,20 @@ public class MainActivity extends AppCompatActivity {
                 index = 4;
                 break;
         }
+        setFragment();
+    }
+
+    private void setFragment() {
+        if (index != currentIndex){
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.hide(mFragments[currentIndex]);
+        if (!mFragments[index].isAdded()){//取反
+            ft.add(R.id.fragment_container,mFragments[index]);
+        }
+            ft.show(mFragments[index]).commit();//显示选中的页面，隐藏之前的页面
+        }
         setRadioButtonStatus();
+        currentIndex = index;//从新赋值
     }
 
     private void setRadioButtonStatus() {

@@ -20,6 +20,7 @@
             android:orientation="horizontal">
 <!--新品-->
             <RadioButton
+                android:onClick="onCheckedChange"
                 android:id="@+id/xp"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
@@ -34,6 +35,7 @@
                 android:checked="true"/>
 <!--精选-->
             <RadioButton
+                android:onClick="onCheckedChange"
                 android:id="@+id/jx"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
@@ -47,6 +49,7 @@
                 android:button="@null" />
 <!--分类-->
             <RadioButton
+                android:onClick="onCheckedChange"
                 android:id="@+id/fl"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
@@ -60,6 +63,7 @@
                 android:button="@null" />
 <!--个人中心-->
             <RadioButton
+                android:onClick="onCheckedChange"
                 android:id="@+id/me"
                 android:layout_weight="1"
                 android:layout_width="match_parent"
@@ -73,6 +77,7 @@
                 android:button="@null" />
 <!--购物车-->
             <RadioButton
+                android:onClick="onCheckedChange"
                 android:layout_weight="1"
                 android:id="@+id/gwc"
                 android:drawablePadding="4dp"
