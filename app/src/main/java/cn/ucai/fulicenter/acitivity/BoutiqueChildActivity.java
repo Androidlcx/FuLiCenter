@@ -1,36 +1,34 @@
-package cn.ucai.fulicenter.fragment;
+package cn.ucai.fulicenter.acitivity;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.View.SpaceItemDecoration;
-import cn.ucai.fulicenter.acitivity.MainActivity;
 import cn.ucai.fulicenter.adapter.GoodsAdapter;
+import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MFGT;
 
-/**
- * Created by Administrator on 2016/10/17.
- */
-public class NewGoodsFragment extends BaseFragment {
+public class BoutiqueChildActivity extends BaseActivity {
+
+    @Bind(R.id.tv_common_title)
+    TextView tvCommonTitle;
     @Bind(R.id.tv_refresh)
     TextView tvRefresh;
     @Bind(R.id.rv)
@@ -38,32 +36,51 @@ public class NewGoodsFragment extends BaseFragment {
     @Bind(R.id.srl)
     SwipeRefreshLayout srl;
 
-    MainActivity mContext;
+    BoutiqueChildActivity mContext;
     GoodsAdapter mAdapter;
-    ArrayList<NewGoodsBean>mList;
+    ArrayList<NewGoodsBean> mList;
     int pageId = 1;
     GridLayoutManager glm;
-    @Nullable
+
+    BoutiqueBean boutique;
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        L.e("NewGoodsFragment.onCreateView");
-        View layout = inflater.inflate(R.layout.fragment_newgoods, container, false);
-        ButterKnife.bind(this, layout);
-        mContext = (MainActivity) getContext();
+    protected void onCreate(Bundle savedInstanceState) {
+        setContentView(R.layout.activity_boutique_child);
+        ButterKnife.bind(this);
+        boutique = (BoutiqueBean) getIntent().getParcelableExtra(I.Boutique.CAT_ID);
+        if (boutique == null){
+            finish();
+        }
+        L.e("boutique="+boutique);
+        mContext = this;
         mList = new ArrayList<>();
         mAdapter = new GoodsAdapter(mContext,mList);
-        super.onCreateView(inflater,container,savedInstanceState);
-//        initView();
-//        initData();
-//        setListener();
-        return layout;
+        super.onCreate(savedInstanceState);
     }
-  @Override
+
+    @Override
+    protected void initView() {
+      /*下拉刷新小圆圈的颜色*/
+        srl.setColorSchemeColors(
+                getResources().getColor(R.color.google_blue),
+                getResources().getColor(R.color.google_green),
+                getResources().getColor(R.color.google_red),
+                getResources().getColor(R.color.google_yellow)
+        );
+        glm = new GridLayoutManager(mContext, I.COLUM_NUM);
+        rv.setLayoutManager(glm);
+        rv.setHasFixedSize(true);//修复图片大小
+        rv.setAdapter(mAdapter);
+        rv.addItemDecoration(new SpaceItemDecoration(12));//设置边距
+        tvCommonTitle.setText(boutique.getTitle());
+    }
+
+    @Override
     protected void setListener() {
         setPullUpListener();
         setPullDownListener();
     }
-//下拉刷新
+    //下拉刷新
     private void setPullDownListener() {
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -76,10 +93,10 @@ public class NewGoodsFragment extends BaseFragment {
         });
 
     }
-
+//下载
     private void downloadNewGoods(final int action) {
         //页面显示，网络请求
-        NetDao.downloadNewGoods(mContext,I.CAT_ID, pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
+        NetDao.downloadNewGoods(mContext,boutique.getId(), pageId, new OkHttpUtils.OnCompleteListener<NewGoodsBean[]>() {
             @Override
             public void onSuccess(NewGoodsBean[] result) {
                 srl.setRefreshing(false);//不在刷新
@@ -137,26 +154,11 @@ public class NewGoodsFragment extends BaseFragment {
     }
     @Override
     protected void initData() {
-       downloadNewGoods(I.ACTION_DOWNLOAD);
+        downloadNewGoods(I.ACTION_DOWNLOAD);
     }
-    @Override
-    protected void initView() {
-        /*下拉刷新小圆圈的颜色*/
-        srl.setColorSchemeColors(
-                getResources().getColor(R.color.google_blue),
-                getResources().getColor(R.color.google_green),
-                getResources().getColor(R.color.google_red),
-                getResources().getColor(R.color.google_yellow)
-        );
-        glm = new GridLayoutManager(mContext, I.COLUM_NUM);
-        rv.setLayoutManager(glm);
-        rv.setHasFixedSize(true);//修复图片大小
-        rv.setAdapter(mAdapter);
-        rv.addItemDecoration(new SpaceItemDecoration(12));//设置边距
-    }
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        ButterKnife.unbind(this);
+
+    @OnClick(R.id.backClickArea)
+    public void onClick() {
+        MFGT.finish(this);
     }
 }

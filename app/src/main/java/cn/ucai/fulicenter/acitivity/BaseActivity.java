@@ -1,10 +1,7 @@
 package cn.ucai.fulicenter.acitivity;
 
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
-
 import cn.ucai.fulicenter.utils.MFGT;
 
 //统计用的

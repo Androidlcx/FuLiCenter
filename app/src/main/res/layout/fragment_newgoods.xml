@@ -13,15 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <include layout="@layout/item_refresh_title"/>
 <!--顶部刷新中的页面布局-->
-        <TextView
-            android:id="@+id/tv_refresh"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/now_refresh"
-            android:textStyle="bold"
-            android:textSize="12sp"
-            android:gravity="center_horizontal"/>
 <!--下拉列表的页面-->
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv"
