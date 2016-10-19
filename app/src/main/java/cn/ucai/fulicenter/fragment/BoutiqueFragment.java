@@ -50,40 +50,44 @@ public class BoutiqueFragment extends Fragment {
         mAdapter = new BoutiqueAdapter(mContext,mList);
         initView();
         initData();//数据抓取
+        setListener();
         return layout;
+    }
+    private void setListener() {
+        setPullDownListener();
+    }
+    //下拉刷新
+    private void setPullDownListener() {
+        srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                srl.setRefreshing(true);
+                tvRefresh.setVisibility(View.VISIBLE);
+                downloadBoutique();
+            }
+        });
+
     }
 
     private void initData() {
-        downloadBoutique(I.ACTION_DOWNLOAD);
+        downloadBoutique();
     }
-
-    private void downloadBoutique(final int action) {
+    private void downloadBoutique() {
         NetDao.downloadBoutique(mContext, new OkHttpUtils.OnCompleteListener<BoutiqueBean[]>() {
             @Override
             public void onSuccess(BoutiqueBean[] result) {
                 srl.setRefreshing(false);//不在刷新
                 tvRefresh.setVisibility(View.GONE);//提示不可见
-                mAdapter.setMore(true);
                 L.e("result"+result);
                 if (result != null && result.length>0){
                     ArrayList<BoutiqueBean> list = ConvertUtils.array2List(result);
-                    if (action == I.ACTION_DOWNLOAD || action == I.ACTION_PULL_DOWN){
                         mAdapter.initData(list);
-                    }else {
-                        mAdapter.addData(list);
-                    }
-                    if (list.size()<I.PAGE_SIZE_DEFAULT){
-                        mAdapter.setMore(false);
-                    }
-                }else {
-                    mAdapter.setMore(false);
                 }
            }
         @Override
         public void onError(String error) {
             srl.setRefreshing(false);
             tvRefresh.setVisibility(View.GONE);
-            mAdapter.setMore(false);
             CommonUtils.showLongToast(error);
             L.e("error"+error);
         }
