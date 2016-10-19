@@ -17,6 +17,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.View.FooterViewHolder;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.utils.ImageLoader;
 
@@ -48,7 +49,7 @@ public class BoutiqueAdapter extends Adapter {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ViewHolder holder = null;
         if (viewType == I.TYPE_FOOTER) {
-            holder = new GoodsAdapter.FooterViewHolder(LayoutInflater.from(mContext)
+            holder = new FooterViewHolder(LayoutInflater.from(mContext)
                     .inflate(R.layout.item_footer, parent, false));
         } else {
             holder = new BoutiqueViewHolder(LayoutInflater.from(mContext)
@@ -56,12 +57,11 @@ public class BoutiqueAdapter extends Adapter {
         }
         return holder;
     }
-
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         //数据填充
-         if (holder instanceof  GoodsAdapter.FooterViewHolder){
-             ((GoodsAdapter.FooterViewHolder)holder).tvFooter.setText(getFooterString());
+         if (holder instanceof  FooterViewHolder){
+             ((FooterViewHolder)holder).tvFooter.setText(getFooterString());
          }
          if (holder instanceof BoutiqueViewHolder){
              BoutiqueBean boutiqueBean = mList.get(position);
