@@ -15,7 +15,6 @@ import cn.ucai.fulicenter.utils.L;
 
 public class MainActivity extends AppCompatActivity {
 
-
     int index;
     RadioButton[] rbs;
     Fragment[] mFragments;
