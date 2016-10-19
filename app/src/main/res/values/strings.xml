@@ -3,6 +3,6 @@
     <string name="app_name">福利社</string>
     <string name="Version_number_is_wrong">Version number is wrong</string>
     <string name="now_refresh">刷新中...</string>
-    <string name="no_more">no more</string>
-    <string name="load_more">load more</string>
+    <string name="no_more">没有更多了..</string>
+    <string name="load_more">加载更多.</string>
 </resources>
