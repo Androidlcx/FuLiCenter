@@ -67,8 +67,10 @@ public class CategoryFragment extends BaseFragment {
                     ArrayList<CategoryGroupBean> groupList = ConvertUtils.array2List(result);
                     L.e("groupList="+groupList.size());
                     mGroupList.addAll(groupList);
-                    for (CategoryGroupBean g :groupList){
-                        downloadChild(g.getId());
+                    for (int i = 0; i<groupList.size();i++){
+                        mChildList.add(new ArrayList<CategoryChildBean>());
+                        CategoryGroupBean g = groupList.get(i);
+                        downloadChild(g.getId(),i);
                     }
                 }
             }
@@ -79,7 +81,7 @@ public class CategoryFragment extends BaseFragment {
         });
     }
 //小类的下载r
-    private void downloadChild(int id) {
+    private void downloadChild(int id,final int index) {
         NetDao.downloadCategoryChild(mContext, id, new OkHttpUtils.OnCompleteListener<CategoryChildBean[]>() {
             @Override
             public void onSuccess(CategoryChildBean[] result) {
@@ -88,7 +90,7 @@ public class CategoryFragment extends BaseFragment {
                 if (result != null && result.length>0){
                     ArrayList<CategoryChildBean> childList = ConvertUtils.array2List(result);
                     L.e("childList="+childList.size());
-                    mChildList.add(childList);
+                    mChildList.set(index,childList);
                     }
                 if (groupCount == mGroupList.size()){
                     mAdapter.iniData(mGroupList,mChildList);
