@@ -7,5 +7,33 @@
     android:orientation="vertical"
     tools:context="cn.ucai.fulicenter.acitivity.CategoryChildActivity">
     <include layout="@layout/common_head_title"/>
-<include layout="@layout/fragment_newgoods"/>
+    <!--价格和上架时间的排序-->
+    <LinearLayout
+        android:layout_marginTop="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="25dp"
+        android:orientation="horizontal"
+        android:background="#FFD7EEF5">
+    <Button
+        android:id="@+id/btn_sort_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@null"
+        android:text="价格"
+        android:textSize="12sp"
+        android:drawableRight="@drawable/arrow_order_down"
+        android:paddingRight="5dp"/>
+    <Button
+        android:id="@+id/btn_sort_addtime"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@null"
+        android:text="上架时间"
+        android:textSize="12sp"
+        android:drawableRight="@drawable/arrow_order_down"
+        android:paddingRight="5dp"/>
+    </LinearLayout>
+    <include layout="@layout/fragment_newgoods"/>
 </LinearLayout>
