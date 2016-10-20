@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 
+import java.util.ArrayList;
+
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.acitivity.BoutiqueChildActivity;
@@ -11,6 +13,7 @@ import cn.ucai.fulicenter.acitivity.CategoryChildActivity;
 import cn.ucai.fulicenter.acitivity.GoodsDetailActivity;
 import cn.ucai.fulicenter.acitivity.MainActivity;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
+import cn.ucai.fulicenter.bean.CategoryChildBean;
 
 //闪屏的实现封装
 public class MFGT {
@@ -35,6 +38,7 @@ public class MFGT {
     }
 
     public static void startActivity(Context context,Intent intent){
+        L.e("MFGT.intent=" +intent);
         context.startActivity(intent);
         ((Activity)context).overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
     }
@@ -46,10 +50,12 @@ public class MFGT {
         startActivity(context,intent);
     }
     //加参数的页面跳转
-    public static void gotoCategoryChildActivity(Context context, int catId){
+    public static void gotoCategoryChildActivity(Context context, int catId, String groupName, ArrayList<CategoryChildBean> list){
         Intent intent = new Intent();
         intent.setClass(context, CategoryChildActivity.class);
         intent.putExtra(I.CategoryChild.CAT_ID,catId);
+        intent.putExtra(I.CategoryGroup.NAME,groupName);
+        intent.putExtra(I.CategoryChild.ID,list);
         startActivity(context,intent);
     }
 }

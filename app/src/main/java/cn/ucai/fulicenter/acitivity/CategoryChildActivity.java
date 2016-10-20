@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import butterknife.Bind;
@@ -16,8 +17,10 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.View.CatChildFilterButton;
 import cn.ucai.fulicenter.View.SpaceItemDecoration;
 import cn.ucai.fulicenter.adapter.GoodsAdapter;
+import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
@@ -51,6 +54,10 @@ public class CategoryChildActivity extends BaseActivity {
     boolean priceasc = false;
 
     int sortBY = I.SORT_BY_ADDTIME_DESC;
+    @Bind(R.id.btnCatChildFilter)
+    CatChildFilterButton btnCatChildFilter;
+    String groupName;
+    ArrayList<CategoryChildBean> mChildList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +70,9 @@ public class CategoryChildActivity extends BaseActivity {
         if (catId == 0) {
             finish();
         }
+        //从分类首页拿到所有数据
+        groupName = getIntent().getStringExtra(I.CategoryGroup.NAME);
+        mChildList = (ArrayList<CategoryChildBean>) getIntent().getSerializableExtra(I.CategoryChild.ID);
         super.onCreate(savedInstanceState);
     }
 
@@ -80,6 +90,8 @@ public class CategoryChildActivity extends BaseActivity {
         rv.setHasFixedSize(true);//修复图片大小
         rv.setAdapter(mAdapter);
         rv.addItemDecoration(new SpaceItemDecoration(12));//设置边距
+        //分类的筛选按钮
+        btnCatChildFilter.setText(groupName);
     }
 
     @Override
@@ -166,6 +178,7 @@ public class CategoryChildActivity extends BaseActivity {
     @Override
     protected void initData() {
         downloadCategoryGoods(I.ACTION_DOWNLOAD);
+        btnCatChildFilter.setOnCatFilterClickListener(groupName,mChildList);
     }
 
     @OnClick(R.id.backClickArea)
@@ -179,32 +192,32 @@ public class CategoryChildActivity extends BaseActivity {
         L.e("sortby,,,");
         switch (view.getId()) {
             case R.id.btn_sort_price:
-                if (priceasc){
+                if (priceasc) {
                     sortBY = I.SORT_BY_PRICE_ASC;
                     //箭头方向
                     right = getResources().getDrawable(R.mipmap.arrow_order_up);
-                }else {
+                } else {
                     sortBY = I.SORT_BY_PRICE_DESC;
                     right = getResources().getDrawable(R.mipmap.arrow_order_down);
                 }
-                right.setBounds(0,0,right.getIntrinsicWidth(),right.getIntrinsicHeight());
-                btnSortPrice.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,right,null);
+                right.setBounds(0, 0, right.getIntrinsicWidth(), right.getIntrinsicHeight());
+                btnSortPrice.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, right, null);
                 priceasc = !priceasc;
                 break;
             case R.id.btn_sort_addtime:
-                if (addTimeAsc){
+                if (addTimeAsc) {
                     sortBY = I.SORT_BY_ADDTIME_ASC;
                     right = getResources().getDrawable(R.mipmap.arrow_order_up);
-                }else {
+                } else {
                     sortBY = I.SORT_BY_ADDTIME_DESC;
                     right = getResources().getDrawable(R.mipmap.arrow_order_down);
                 }
-                right.setBounds(0,0,right.getIntrinsicWidth(),right.getIntrinsicHeight());
-                btnSortAddtime.setCompoundDrawablesRelativeWithIntrinsicBounds(null,null,right,null);
+                right.setBounds(0, 0, right.getIntrinsicWidth(), right.getIntrinsicHeight());
+                btnSortAddtime.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, right, null);
                 addTimeAsc = !addTimeAsc;
                 break;
         }
-        L.e("sortby...sortby="+sortBY);
+        L.e("sortby...sortby=" + sortBY);
         mAdapter.setSortBy(sortBY);
     }
 }
