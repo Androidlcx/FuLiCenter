@@ -78,7 +78,7 @@ public class CategoryFragment extends BaseFragment {
             }
         });
     }
-//小类的下载
+//小类的下载r
     private void downloadChild(int id) {
         NetDao.downloadCategoryChild(mContext, id, new OkHttpUtils.OnCompleteListener<CategoryChildBean[]>() {
             @Override
