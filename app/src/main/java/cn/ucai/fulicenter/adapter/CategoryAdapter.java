@@ -16,6 +16,7 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.CategoryGroupBean;
 import cn.ucai.fulicenter.utils.ImageLoader;
+import cn.ucai.fulicenter.utils.MFGT;
 
 /**
  * Created by Administrator on 2016/10/20.
@@ -100,10 +101,16 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
              holder = (ChildViewHolder) view.getTag();
         }
         //填充数据
-        CategoryChildBean child = getChild(groupPosition, childPosition);
+        final CategoryChildBean child = getChild(groupPosition, childPosition);
         if (child != null){
             ImageLoader.downloadImg(mContext,holder.ivCategoryChildThumb,child.getImageUrl());
             holder.tvCategoryChildName.setText(child.getName());
+            holder.layoutCategoryChild.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    MFGT.gotoCategoryChildActivity(mContext,child.getId());
+                }
+            });
         }
         return view;
     }
@@ -143,8 +150,8 @@ public class CategoryAdapter extends BaseExpandableListAdapter {
         ImageView ivCategoryChildThumb;
         @Bind(R.id.tv_category_child_name)
         TextView tvCategoryChildName;
-        @Bind(R.id.item_category_child)
-        RelativeLayout itemCategoryChild;
+        @Bind(R.id.layout_category_child)
+         RelativeLayout layoutCategoryChild;
 
         ChildViewHolder(View view) {
             ButterKnife.bind(this, view);

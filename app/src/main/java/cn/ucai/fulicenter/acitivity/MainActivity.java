@@ -99,7 +99,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.gwc:
                 index = 3;
-                break;si
+                break;
             case R.id.me:
                 index = 4;
                 break;
