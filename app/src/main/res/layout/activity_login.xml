@@ -58,7 +58,7 @@
     </RelativeLayout>
         <RelativeLayout
             android:id="@+id/rl_login"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="35dp"
             android:layout_below="@id/rl_password"
             android:layout_width="300dp"
             android:layout_height="40dp"
@@ -69,11 +69,11 @@
                 android:layout_height="40dp"
                 android:background="@drawable/tb_btn_login_orange_normal"
                 android:text="登录"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 android:textColor="#fff"/>
         </RelativeLayout>
         <RelativeLayout
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="15dp"
             android:layout_below="@id/rl_login"
             android:layout_width="150dp"
             android:layout_height="40dp"
