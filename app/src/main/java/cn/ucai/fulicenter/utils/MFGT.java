@@ -13,6 +13,7 @@ import cn.ucai.fulicenter.acitivity.CategoryChildActivity;
 import cn.ucai.fulicenter.acitivity.GoodsDetailActivity;
 import cn.ucai.fulicenter.acitivity.LoginActivity;
 import cn.ucai.fulicenter.acitivity.MainActivity;
+import cn.ucai.fulicenter.acitivity.RegisterActivity;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 
@@ -62,5 +63,9 @@ public class MFGT {
     //登录
     public static void gotoLogin(Activity context){
         startActivity(context, LoginActivity.class);
+    }
+    //注册
+    public static void gotoRegister(Activity context){
+        startActivity(context, RegisterActivity.class);
     }
 }
