@@ -11,6 +11,7 @@ import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.acitivity.BoutiqueChildActivity;
 import cn.ucai.fulicenter.acitivity.CategoryChildActivity;
 import cn.ucai.fulicenter.acitivity.GoodsDetailActivity;
+import cn.ucai.fulicenter.acitivity.LoginActivity;
 import cn.ucai.fulicenter.acitivity.MainActivity;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
@@ -57,5 +58,9 @@ public class MFGT {
         intent.putExtra(I.CategoryGroup.NAME,groupName);
         intent.putExtra(I.CategoryChild.ID,list);
         startActivity(context,intent);
+    }
+    //登录
+    public static void gotoLogin(Activity context){
+        startActivity(context, LoginActivity.class);
     }
 }
