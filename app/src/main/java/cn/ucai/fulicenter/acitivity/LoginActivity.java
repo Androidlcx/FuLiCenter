@@ -112,6 +112,7 @@ private static final String TAG = LoginActivity.class.getSimpleName();
 
             @Override
             public void onError(String error) {
+                pd.dismiss();
                 CommonUtils.showLongToast(error);
                 L.e(TAG,"error =" +error);
             }
