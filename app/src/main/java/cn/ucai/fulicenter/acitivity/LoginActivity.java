@@ -10,10 +10,13 @@ import android.widget.EditText;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.User;
+import cn.ucai.fulicenter.dao.SharePrefrenceUtils;
+import cn.ucai.fulicenter.dao.UserDao;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.CommonUtils;
@@ -96,7 +99,16 @@ private static final String TAG = LoginActivity.class.getSimpleName();
                         if (result.isRetMsg()){
                             User user = (User) result.getRetData();
                             L.e(TAG,"user ="+user);
-                            MFGT.finish(mContext);
+                            //保存user的数据到数据库里
+                            UserDao dao = new UserDao(mContext);
+                           boolean isSuccess = dao.saveUser(user);
+                            if (isSuccess){
+                                SharePrefrenceUtils.getInstance(mContext).saveUser(user.getMuserName());
+                                FuLiCenterApplication.setUser(user);
+                                MFGT.finish(mContext);
+                            }else {
+                                CommonUtils.showLongToast(R.string.user_database_error);
+                            }
                         }else {
                             if (result.getRetCode() == I.MSG_LOGIN_UNKNOW_USER){
                                 CommonUtils.showLongToast(R.string.login_fail_unknow_user);
