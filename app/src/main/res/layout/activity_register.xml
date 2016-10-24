@@ -83,6 +83,7 @@
                 android:layout_height="45dp"
                 android:background="@null"
                 android:hint="密码"
+                android:inputType="textPassword"
                 android:textSize="15sp"/>
             <View
                 android:layout_width="match_parent"
@@ -109,6 +110,7 @@
                 android:layout_height="45dp"
                 android:background="@null"
                 android:hint="再次输入密码"
+                android:inputType="textPassword"
                 android:textSize="15sp"/>
             <View
                 android:layout_width="match_parent"

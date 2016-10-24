@@ -54,6 +54,7 @@
             android:layout_height="45dp"
             android:background="@null"
             android:hint="输入密码"
+            android:inputType="textPassword"
             android:textSize="18sp"/>
     </RelativeLayout>
         <RelativeLayout

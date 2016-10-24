@@ -1,6 +1,7 @@
 package cn.ucai.fulicenter.acitivity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.Button;
@@ -9,6 +10,7 @@ import android.widget.EditText;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.View.DisplayUtils;
 import cn.ucai.fulicenter.bean.Result;
@@ -44,9 +46,9 @@ private static final String TAG = RegisterActivity.class.getSimpleName();
         mContext  = this;
         super.onCreate(savedInstanceState);
     }
-
     @Override
     protected void initView() {
+        L.e("");
         DisplayUtils.initBackWithTitle(this, "用户注册");
     }
 
@@ -66,7 +68,7 @@ private static final String TAG = RegisterActivity.class.getSimpleName();
         username = etReUsername.getText().toString().trim();//trim:去掉头尾的空格
         nick = etNick.getText().toString().trim();
         passwrod = etRePassword.getText().toString().trim();
-        String confirmpassword = etReConformpassword.getText().toString().trim();
+        String confirmpwd = etReConformpassword.getText().toString().trim();
             if (TextUtils.isEmpty(username)){
                 CommonUtils.showShortToast(R.string.user_name_connot_be_empty);
                 etReUsername.requestFocus();
@@ -83,11 +85,11 @@ private static final String TAG = RegisterActivity.class.getSimpleName();
                 CommonUtils.showShortToast(R.string.password_connot_be_empty);
                 etRePassword.requestFocus();
                 return;
-            }else if (TextUtils.isEmpty(confirmpassword)){
+            }else if (TextUtils.isEmpty(confirmpwd)){
                 CommonUtils.showShortToast(R.string.confirm_password_connot_be_empty);
                 etReConformpassword.requestFocus();
                 return;
-            }else if (!passwrod.equals(confirmpassword)){
+            }else if (!passwrod.equals(confirmpwd)){
                 CommonUtils.showShortToast(R.string.two_input_password);
                 etReConformpassword.requestFocus();
                 return;
@@ -102,18 +104,20 @@ private static final String TAG = RegisterActivity.class.getSimpleName();
         NetDao.register(mContext, username, nick, passwrod, new OkHttpUtils.OnCompleteListener<Result>() {
             @Override
             public void onSuccess(Result result) {
-                pd.dismiss();
+
                 if (result == null){
                     CommonUtils.showLongToast(R.string.register_fail);
                 }else{
                     if (result.isRetMsg()){
                         CommonUtils.showLongToast(R.string.register_success);
+                        setResult(RESULT_OK,new Intent().putExtra(I.User.USER_NAME,username));
                         MFGT.finish(mContext);
                     }else {
                         CommonUtils.showLongToast(R.string.register_fail_exists);
                         etReUsername.requestFocus();
                     }
                 }
+                pd.dismiss();
             }
 
             @Override
