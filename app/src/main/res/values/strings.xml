@@ -32,4 +32,7 @@
     <string name="update_nick_fail_unmodify">昵称没有修改</string>
     <string name="update_fail">修改昵称失败</string>
     <string name="update_user_nick_success">修改昵称成功</string>
+    <string name="update_user_avatar">上传头像</string>
+    <string name="update_usre_avatar_fail">上传失败</string>
+    <string name="update_usre_avatar_success">上传成功</string>
 </resources>
