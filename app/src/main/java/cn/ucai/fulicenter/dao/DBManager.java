@@ -7,14 +7,14 @@ import android.database.sqlite.SQLiteDatabase;
 
 import cn.ucai.fulicenter.bean.User;
 
-
+//对数据的操作,增删改查
 public class DBManager {
     private static DBManager dbMgr = new DBManager();
     private  DBOpenHelper dbHelper;
     void onInit(Context context){
         dbHelper = new DBOpenHelper(context);
     }
-    public  static synchronized DBManager getInstacne(){
+    public  static synchronized DBManager getInstance(){
         return dbMgr;
     }
     public synchronized void closeDB(){
@@ -22,50 +22,51 @@ public class DBManager {
             dbHelper.closeDB();
         }
     }
+    //将用户的信息保存到数据库里面
     public synchronized boolean saveUser(User user){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put(UserDao.TABLE_COLUMN_NAME,user.getMuserName());
-        values.put(UserDao.TABLE_COLUMN_NICK,user.getMuserNick());
-        values.put(UserDao.TABLE_COLUMN_AVATAR_ID,user.getMavatarId());
-        values.put(UserDao.TABLE_COLUMN_AVATAR_TYPE,user.getMavatarType());
-        values.put(UserDao.TABLE_COLUMN_AVATAR_PATH,user.getMavatarPath());
-        values.put(UserDao.TABLE_COLUMN_AVATAR_SUFFIX,user.getMavatarSuffix());
-        values.put(UserDao.TABLE_COLUMN_AVATAR_LASTUPDATE_TIME,user.getMavatarLastUpdateTime());
+        values.put(UserDao.USER_COLUMN_NAME,user.getMuserName());
+        values.put(UserDao.USER_COLUMN_NICK,user.getMuserNick());
+        values.put(UserDao.USER_COLUMN_AVATAR_ID,user.getMavatarId());
+        values.put(UserDao.USER_COLUMN_AVATAR_TYPE,user.getMavatarType());
+        values.put(UserDao.USER_COLUMN_AVATAR_PATH,user.getMavatarPath());
+        values.put(UserDao.USER_COLUMN_AVATAR_SUFFIX,user.getMavatarSuffix());
+        values.put(UserDao.USER_COLUMN_AVATAR_LASTUPDATE_TIME,user.getMavatarLastUpdateTime());
         if (db.isOpen()){
-            return db.replace(UserDao.TABLE_USER_NAME,null,values) != -1;
+            return db.replace(UserDao.USER_TABLE_NAME,null,values) != -1;
         }
         return false;
     }
     public synchronized User getUser(String username){
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        String sql = "select * form " + UserDao.TABLE_USER_NAME + " where "
-                + UserDao.TABLE_COLUMN_NAME + " =?";
+        String sql = "select * form " + UserDao.USER_TABLE_NAME + " where "
+                + UserDao.USER_COLUMN_NAME + " = ?";
         User user = null;
         Cursor cursor = db.rawQuery(sql,new String[]{username});
         if (cursor.moveToNext()){
             user = new User();
             user.setMuserName(username);
-            user.setMuserNick(cursor.getString(cursor.getColumnIndex(UserDao.TABLE_COLUMN_NICK)));
-            user.setMavatarId(cursor.getInt(cursor.getColumnIndex(UserDao.TABLE_COLUMN_AVATAR_ID)));
-            user.setMavatarType(cursor.getInt(cursor.getColumnIndex(UserDao.TABLE_COLUMN_AVATAR_TYPE)));
-            user.setMavatarPath(cursor.getString(cursor.getColumnIndex(UserDao.TABLE_COLUMN_AVATAR_PATH)));
-            user.setMavatarSuffix(cursor.getString(cursor.getColumnIndex(UserDao.TABLE_COLUMN_AVATAR_SUFFIX)));
-            user.setMavatarLastUpdateTime(cursor.getString(cursor.getColumnIndex(UserDao.TABLE_COLUMN_AVATAR_LASTUPDATE_TIME)));
+            user.setMuserNick(cursor.getString(cursor.getColumnIndex(UserDao.USER_COLUMN_NICK)));
+            user.setMavatarId(cursor.getInt(cursor.getColumnIndex(UserDao.USER_COLUMN_AVATAR_ID)));
+            user.setMavatarType(cursor.getInt(cursor.getColumnIndex(UserDao.USER_COLUMN_AVATAR_TYPE)));
+            user.setMavatarPath(cursor.getString(cursor.getColumnIndex(UserDao.USER_COLUMN_AVATAR_PATH)));
+            user.setMavatarSuffix(cursor.getString(cursor.getColumnIndex(UserDao.USER_COLUMN_AVATAR_SUFFIX)));
+            user.setMavatarLastUpdateTime(cursor.getString(cursor.getColumnIndex(UserDao.USER_COLUMN_AVATAR_LASTUPDATE_TIME)));
             return user;
         }
         return user;
     }
-    //更新
+    //更新用户
     public synchronized boolean updateUser(User user){
         int resule = -1;
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         //更新条件
-        String sql = UserDao.TABLE_COLUMN_NAME + "=?";
+        String sql = UserDao.USER_COLUMN_NAME + "=?";
         ContentValues values = new ContentValues();
-        values.put(UserDao.TABLE_COLUMN_NICK,user.getMuserNick());
+        values.put(UserDao.USER_COLUMN_NICK,user.getMuserNick());
         if (db.isOpen()){
-            resule = db.update(UserDao.TABLE_USER_NAME,values,sql,new String[]{user.getMuserName()});
+            resule = db.update(UserDao.USER_TABLE_NAME,values,sql,new String[]{user.getMuserName()});
         }
         return resule > 0;
     }
