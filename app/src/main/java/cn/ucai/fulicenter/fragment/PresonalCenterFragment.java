@@ -30,6 +30,7 @@ public class PresonalCenterFragment extends BaseFragment {
     TextView tvUsername;
 
     MainActivity mContext;
+    User user = null;
 
     @Nullable
     @Override
@@ -48,11 +49,9 @@ public class PresonalCenterFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        User user = FuLiCenterApplication.getUser();
+        user = FuLiCenterApplication.getUser();
         L.e(TAG,"user =" +user);
-        if (user == null){
-            MFGT.gotoLogin(mContext);
-        }else {
+        if (user != null){
             ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user),mContext,ivAvatar);
             tvUsername.setText(user.getMuserNick());
         }
@@ -62,6 +61,11 @@ public class PresonalCenterFragment extends BaseFragment {
     protected void setListener() {
 
     }
+    @Override
+    public void onResume() {
+        super.onResume();
+        initData();
+    }
 
     @Override
     public void onDestroyView() {
@@ -69,7 +73,8 @@ public class PresonalCenterFragment extends BaseFragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick(R.id.tvSettings)
-    public void onClick() {
+    @OnClick({R.id.tvSettings,R.id.center_user_info})
+    public void gotoSettings() {
+        MFGT.gotoSettings(mContext);
     }
 }

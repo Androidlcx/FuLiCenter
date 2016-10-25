@@ -25,4 +25,5 @@
     <string name="logining">登录中</string>
     <string name="login_fail_unknow_user">登录失败，帐号不存在</string>
     <string name="user_database_error">用户数据库异常</string>
+    <string name="user_profile">个人资料</string>
 </resources>

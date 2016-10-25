@@ -14,7 +14,7 @@ public class SharePrefrenceUtils {
     public static final String SHARE_KEY_USER_NAME = "share_key_user_name";
 
     public SharePrefrenceUtils(Context context) {
-        mSharedPreferences = context.getSharedPreferences(SHARE_NAME,Context.MODE_APPEND);
+        mSharedPreferences = context.getSharedPreferences(SHARE_NAME,Context.MODE_PRIVATE);
         mEditor = mSharedPreferences.edit();
     }
     public static SharePrefrenceUtils getInstance (Context context){

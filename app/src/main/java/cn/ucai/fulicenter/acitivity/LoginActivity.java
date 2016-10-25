@@ -13,6 +13,7 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
+import cn.ucai.fulicenter.View.DisplayUtils;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.dao.SharePrefrenceUtils;
@@ -44,7 +45,7 @@ private static final String TAG = LoginActivity.class.getSimpleName();
 
     @Override
     protected void initView() {
-
+        DisplayUtils.initBackWithTitle(mContext,getResources().getString(R.string.login));
     }
 
     @Override

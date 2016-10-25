@@ -14,6 +14,7 @@ import cn.ucai.fulicenter.acitivity.GoodsDetailActivity;
 import cn.ucai.fulicenter.acitivity.LoginActivity;
 import cn.ucai.fulicenter.acitivity.MainActivity;
 import cn.ucai.fulicenter.acitivity.RegisterActivity;
+import cn.ucai.fulicenter.acitivity.UserProfileActivity;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 
@@ -77,5 +78,9 @@ public class MFGT {
         context.startActivityForResult(intent,requestCode);
         //切换动画
         context.overridePendingTransition(R.anim.push_left_in,R.anim.push_left_out);
+    }
+    //跳转的方法
+    public static void gotoSettings(Activity context){
+        startActivity(context, UserProfileActivity.class);
     }
 }

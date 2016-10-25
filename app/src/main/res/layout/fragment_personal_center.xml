@@ -34,6 +34,7 @@
                 android:paddingTop="10dp"/>
         </RelativeLayout>
         <RelativeLayout
+            android:id="@+id/center_user_info"
             android:layout_width="match_parent"
             android:layout_height="70dp">
             <ImageView

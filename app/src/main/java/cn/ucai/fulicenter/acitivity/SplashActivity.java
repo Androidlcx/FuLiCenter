@@ -1,8 +1,6 @@
 package cn.ucai.fulicenter.acitivity;
 
-import android.content.Intent;
 import android.os.Handler;
-import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
@@ -14,11 +12,11 @@ import cn.ucai.fulicenter.dao.UserDao;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
 
-public class Splash2Activity extends AppCompatActivity {
-    private static final String TAG = Splash2Activity.class.getSimpleName();
+public class SplashActivity extends AppCompatActivity {
+    private static final String TAG = SplashActivity.class.getSimpleName();
     //闪屏的时间
  private final long sleepTime = 2000;
-    Splash2Activity mContext;
+    SplashActivity mContext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +42,7 @@ public class Splash2Activity extends AppCompatActivity {
                        FuLiCenterApplication.setUser(user);
                    }
                }
-               MFGT.gotoMainActivity(Splash2Activity.this);
+               MFGT.gotoMainActivity(SplashActivity.this);
                finish();
            }
        },sleepTime);
