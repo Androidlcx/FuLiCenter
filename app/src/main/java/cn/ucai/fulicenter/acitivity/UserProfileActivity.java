@@ -1,5 +1,6 @@
 package cn.ucai.fulicenter.acitivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -9,10 +10,12 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.FuLiCenterApplication;
+import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.View.DisplayUtils;
 import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.dao.SharePrefrenceUtils;
+import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.utils.MFGT;
 
@@ -44,14 +47,11 @@ public class UserProfileActivity extends BaseActivity {
     @Override
     protected void initData() {
         user = FuLiCenterApplication.getUser();
-        if (user != null){
-            //数据的加载
-            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user),mContext,imPersonalDataUserAvatar);
-            tvPersonalDataUsername.setText(user.getMuserName());
-            tvPersonalDataNick.setText(user.getMuserNick());
-        }else{
+        if (user == null){
             finish();
+            return;
         }
+        showInfo();
     }
 
     @Override
@@ -65,8 +65,10 @@ public class UserProfileActivity extends BaseActivity {
             case R.id.rl_UserNameAvatar:
                 break;
             case R.id.rl_UserName:
+                CommonUtils.showLongToast(R.string.user_name_connot_be_modify);
                 break;
             case R.id.rl_Nick:
+                MFGT.gotoUpdateNick(mContext);
                 break;
             case R.id.btn_personal_data_exit:
                 exit();//调用退出方法
@@ -81,5 +83,30 @@ public class UserProfileActivity extends BaseActivity {
             MFGT.gotoLogin(mContext);
         }
         finish();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showInfo();
+    }
+//更新昵称提示
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == RESULT_OK && requestCode == I.REQUEST_CODE_NICK){
+            CommonUtils.showLongToast(R.string.update_user_nick_success);
+        }
+    }
+
+    private void showInfo(){
+        user = FuLiCenterApplication.getUser();
+        if (user != null){
+            //数据的加载
+            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user),mContext,imPersonalDataUserAvatar);
+            tvPersonalDataUsername.setText(user.getMuserName());
+            tvPersonalDataNick.setText(user.getMuserNick());
+        }
     }
 }

@@ -26,4 +26,9 @@
     <string name="login_fail_unknow_user">登录失败，帐号不存在</string>
     <string name="user_database_error">用户数据库异常</string>
     <string name="user_profile">个人资料</string>
+    <string name="user_name_connot_be_modify">用户名不可被修改</string>
+    <string name="update_user_nick">更改昵称</string>
+    <string name="update_nick_fail_unmodify">昵称没有修改</string>
+    <string name="update_fail">修改昵称失败</string>
+    <string name="update_user_nick_success">修改昵称成功</string>
 </resources>

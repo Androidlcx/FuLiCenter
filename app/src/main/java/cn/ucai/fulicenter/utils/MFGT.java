@@ -14,6 +14,7 @@ import cn.ucai.fulicenter.acitivity.GoodsDetailActivity;
 import cn.ucai.fulicenter.acitivity.LoginActivity;
 import cn.ucai.fulicenter.acitivity.MainActivity;
 import cn.ucai.fulicenter.acitivity.RegisterActivity;
+import cn.ucai.fulicenter.acitivity.UpdateNickActivity;
 import cn.ucai.fulicenter.acitivity.UserProfileActivity;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
@@ -82,5 +83,9 @@ public class MFGT {
     //跳转的方法
     public static void gotoSettings(Activity context){
         startActivity(context, UserProfileActivity.class);
+    }
+    //更新昵称跳转
+    public static void gotoUpdateNick(Activity context){
+        startActivityForResult(context,new Intent(context, UpdateNickActivity.class),I.REQUEST_CODE_NICK);
     }
 }
