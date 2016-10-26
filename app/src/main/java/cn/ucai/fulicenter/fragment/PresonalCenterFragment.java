@@ -14,10 +14,15 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.acitivity.MainActivity;
+import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.User;
+import cn.ucai.fulicenter.dao.UserDao;
+import cn.ucai.fulicenter.net.NetDao;
+import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.ImageLoader;
 import cn.ucai.fulicenter.utils.L;
 import cn.ucai.fulicenter.utils.MFGT;
+import cn.ucai.fulicenter.utils.ResultUtils;
 
 /**
  * Created by Administrator on 2016/10/24.
@@ -54,6 +59,7 @@ public class PresonalCenterFragment extends BaseFragment {
         if (user != null){
             ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user),mContext,ivAvatar);
             tvUsername.setText(user.getMuserNick());
+            syncUserInfo();
         }
     }
 
@@ -76,5 +82,32 @@ public class PresonalCenterFragment extends BaseFragment {
     @OnClick({R.id.tvSettings,R.id.center_user_info})
     public void gotoSettings() {
         MFGT.gotoSettings(mContext);
+    }
+    //用户资料的刷新
+    private void syncUserInfo(){
+        NetDao.syncUserInfo(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<String>() {
+            @Override
+            public void onSuccess(String s) {
+                Result result = ResultUtils.getResultFromJson(s,User.class);
+                if (result != null){
+                    User u = (User) result.getRetData();
+                    if (!user.equals(u)){
+                        UserDao dao = new UserDao(mContext);
+                        boolean b = dao.saveUser(u);
+                        if (b){
+                            FuLiCenterApplication.setUser(u);
+                            user = u;
+                            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user),mContext,ivAvatar);
+                            tvUsername.setText(user.getMuserName());
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+
+            }
+        });
     }
 }
