@@ -1,21 +1,24 @@
 package cn.ucai.fulicenter.acitivity;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.View.FlowIndicator;
 import cn.ucai.fulicenter.View.SlideAutoLoopView;
 import cn.ucai.fulicenter.bean.AlbumsBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
+import cn.ucai.fulicenter.bean.MessageBean;
+import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.CommonUtils;
@@ -43,31 +46,37 @@ public class GoodsDetailActivity extends BaseActivity {
 
     int goodsId;
     GoodsDetailActivity mContext;
+    boolean isCollected = false;
+    @Bind(R.id.iv_goods_collect)
+    ImageView ivGoodsCollect;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setContentView(R.layout.activity_goods_detail);
         ButterKnife.bind(this);
         goodsId = getIntent().getIntExtra(I.GoodsDetails.KEY_GOODS_ID, 0);
         L.e("details", "goodsid=" + goodsId);
-        if (goodsId == 0){
+        if (goodsId == 0) {
             finish();
         }
         mContext = this;
         super.onCreate(savedInstanceState);
     }
-   @Override
+
+    @Override
     protected void setListener() {
 
     }
-   @Override
+
+    @Override
     protected void initData() {
         NetDao.downloadGoodsDetail(mContext, goodsId, new OkHttpUtils.OnCompleteListener<GoodsDetailsBean>() {
             @Override
             public void onSuccess(GoodsDetailsBean result) {
-                L.i("details="+result);
-                if (result != null){
+                L.i("details=" + result);
+                if (result != null) {
                     showGoodDetails(result);
-                }else {
+                } else {
                     finish();
                 }
             }
@@ -75,52 +84,95 @@ public class GoodsDetailActivity extends BaseActivity {
             @Override
             public void onError(String error) {
                 finish();
-                L.e("details,error="+error);
+                L.e("details,error=" + error);
                 CommonUtils.showLongToast(error);
             }
         });
     }
-//数据填充
+
+    //数据填充
     private void showGoodDetails(GoodsDetailsBean details) {
         tvGoodNameEnglish.setText(details.getGoodsEnglishName());
         tvGoodName.setText(details.getGoodsName());
         tvGoodPriceCurrent.setText(details.getCurrencyPrice());
         tvGoodPriceShop.setText(details.getShopPrice());
         //轮播图片以及外部webView
-        salv.startPlayLoop(indicator,getAlbumImUrl(details),getAlbumImgCount(details));
+        salv.startPlayLoop(indicator, getAlbumImUrl(details), getAlbumImgCount(details));
         //商品简介webView加载数据
-        wvGoodsBrief.loadDataWithBaseURL(null,details.getGoodsBrief(),I.TEXT_HTML,I.UTF_8,null);
+        wvGoodsBrief.loadDataWithBaseURL(null, details.getGoodsBrief(), I.TEXT_HTML, I.UTF_8, null);
     }
 
     private int getAlbumImgCount(GoodsDetailsBean details) {
-        if (details.getProperties() != null && details.getProperties().length>0){
+        if (details.getProperties() != null && details.getProperties().length > 0) {
             return details.getProperties()[0].getAlbums().length;
-            }
+        }
         return 0;
     }
 
     private String[] getAlbumImUrl(GoodsDetailsBean details) {
         String[] urls = new String[]{};
-        if (details.getProperties() != null && details.getProperties().length>0){
-            AlbumsBean [] albums = details.getProperties()[0].getAlbums();
+        if (details.getProperties() != null && details.getProperties().length > 0) {
+            AlbumsBean[] albums = details.getProperties()[0].getAlbums();
             urls = new String[albums.length];
-            for (int i = 0 ;i<albums.length;i++){
+            for (int i = 0; i < albums.length; i++) {
                 urls[i] = albums[i].getImgUrl();
             }
         }
-        return  urls;
+        return urls;
     }
-//顶部返回按钮
+
+    //顶部返回按钮
     @Override
     protected void initView() {
 
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        isCollected();
+    }
+
     @OnClick(R.id.backClickArea)
-    public void onBackClick(){
+    public void onBackClick() {
         MFGT.finish(this);
     }
+
     //系统返回按钮
-    public void back(View view){
+    public void back(View view) {
         MFGT.finish(this);
+    }
+
+    //收藏商品
+    private void isCollected() {
+        User user = FuLiCenterApplication.getUser();
+        if (user != null) {
+            NetDao.isCollected(mContext, user.getMuserName(), goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+                    if (result != null && result.isSuccess()) {
+                        isCollected = true;
+                    }else{
+                        isCollected = false;
+                    }
+                    updateGoodsCollectStatus();//判断是否收藏的方法
+                }
+
+                @Override
+                public void onError(String error) {
+                    isCollected = false;
+                    updateGoodsCollectStatus();//判断是否收藏的方法
+                }
+            });
+        }
+        updateGoodsCollectStatus();//判断是否收藏的方法
+    }
+
+    private void updateGoodsCollectStatus() {
+        if (isCollected) {
+            ivGoodsCollect.setImageResource(R.mipmap.bg_collect_out);
+        }else {
+            ivGoodsCollect.setImageResource(R.mipmap.bg_collect_in);
+        }
     }
 }
