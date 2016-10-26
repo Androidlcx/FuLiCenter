@@ -68,6 +68,7 @@
             android:orientation="horizontal"
             android:background="#f15805">
             <RelativeLayout
+                android:id="@+id/layout_center_collect"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:layout_height="wrap_content">

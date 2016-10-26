@@ -10,6 +10,7 @@ import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.acitivity.BoutiqueChildActivity;
 import cn.ucai.fulicenter.acitivity.CategoryChildActivity;
+import cn.ucai.fulicenter.acitivity.CollectsActivity;
 import cn.ucai.fulicenter.acitivity.GoodsDetailActivity;
 import cn.ucai.fulicenter.acitivity.LoginActivity;
 import cn.ucai.fulicenter.acitivity.MainActivity;
@@ -87,5 +88,9 @@ public class MFGT {
     //更新昵称跳转
     public static void gotoUpdateNick(Activity context){
         startActivityForResult(context,new Intent(context, UpdateNickActivity.class),I.REQUEST_CODE_NICK);
+    }
+    //跳转到收藏界面的方法
+    public static void gotoCollects(Activity context){
+        startActivity(context, CollectsActivity.class);
     }
 }

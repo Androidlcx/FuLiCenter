@@ -3,13 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/activity_collects"
     tools:context="cn.ucai.fulicenter.acitivity.CollectsActivity">
- <include layout="@layout/common_head_title_white"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/common_head_title">
+        android:orientation="vertical">
+        <include layout="@layout/common_head_title_white"/>
         <include layout="@layout/fragment_newgoods"/>
     </LinearLayout>
 </RelativeLayout>

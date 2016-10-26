@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import butterknife.Bind;
@@ -87,6 +88,10 @@ public class PresonalCenterFragment extends BaseFragment {
     public void gotoSettings() {
         MFGT.gotoSettings(mContext);
     }
+    @OnClick(R.id.layout_center_collect)
+    public void gotoCollectsList(){
+        MFGT.gotoCollects(mContext);
+    }
 
     //用户资料的刷新
     private void syncUserInfo() {
@@ -121,9 +126,9 @@ public class PresonalCenterFragment extends BaseFragment {
         NetDao.getCollectsCount(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
             @Override
             public void onSuccess(MessageBean result) {
-                if (result != null && result.isSuccess()){
+                if (result != null && result.isSuccess()) {
                     tvGoodsColumn.setText(result.getMsg());
-                }else {
+                } else {
                     tvGoodsColumn.setText(String.valueOf(0));
                 }
             }
@@ -131,7 +136,7 @@ public class PresonalCenterFragment extends BaseFragment {
             @Override
             public void onError(String error) {
                 tvGoodsColumn.setText(String.valueOf(0));
-                L.e(TAG,"error = " +error);
+                L.e(TAG, "error = " + error);
             }
         });
     }

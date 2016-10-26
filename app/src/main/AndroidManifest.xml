@@ -25,7 +25,8 @@
         <activity android:name=".acitivity.LoginActivity" />
         <activity android:name=".acitivity.RegisterActivity" />
         <activity android:name=".acitivity.UserProfileActivity" />
-        <activity android:name=".acitivity.UpdateNickActivity"></activity>
+        <activity android:name=".acitivity.UpdateNickActivity" />
+        <activity android:name=".acitivity.CollectsActivity"></activity>
     </application>
 
 </manifest>

@@ -8,6 +8,7 @@ import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.CategoryGroupBean;
+import cn.ucai.fulicenter.bean.CollectBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
 import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
@@ -142,5 +143,15 @@ public class NetDao {
                    .addParam(I.Collect.USER_NAME,username)
                    .targetClass(MessageBean.class)
                    .execute(listener);
+    }
+    //下载收藏商品的列表显示
+    public static void downloadCollects(Context context, String username, int pageId, OkHttpUtils.OnCompleteListener<CollectBean[]> listener){
+            OkHttpUtils<CollectBean[]> utils = new OkHttpUtils<>(context);
+                 utils.setRequestUrl(I.REQUEST_FIND_COLLECTS)
+                         .addParam(I.Collect.USER_NAME,username)
+                         .addParam(I.PAGE_ID,String.valueOf(pageId))
+                         .addParam(I.PAGE_SIZE,String.valueOf(I.PAGE_SIZE_DEFAULT))
+                         .targetClass(CollectBean[].class)
+                         .execute(listener);
     }
 }
