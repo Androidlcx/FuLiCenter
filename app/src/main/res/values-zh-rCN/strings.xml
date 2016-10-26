@@ -35,4 +35,5 @@
     <string name="update_usre_avatar_fail">上传失败</string>
     <string name="update_usre_avatar_success">上传成功</string>
     <string name="collect_title">收藏的商品</string>
+    <string name="delete_collect_fail">删除收藏失败</string>
 </resources>
