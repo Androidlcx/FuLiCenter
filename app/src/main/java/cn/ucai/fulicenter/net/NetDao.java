@@ -9,6 +9,7 @@ import cn.ucai.fulicenter.bean.BoutiqueBean;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.CategoryGroupBean;
 import cn.ucai.fulicenter.bean.GoodsDetailsBean;
+import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.bean.NewGoodsBean;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.utils.MD5;
@@ -133,5 +134,13 @@ public class NetDao {
                 .addParam(I.User.USER_NAME, username)
                 .targetClass(String.class)
                 .execute(listener);
+    }
+    //获取商品数量请求
+    public static void getCollectsCount(Context context, String username, OkHttpUtils.OnCompleteListener<MessageBean> listener){
+          OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
+           utils.setRequestUrl(I.REQUEST_FIND_COLLECT_COUNT)
+                   .addParam(I.Collect.USER_NAME,username)
+                   .targetClass(MessageBean.class)
+                   .execute(listener);
     }
 }

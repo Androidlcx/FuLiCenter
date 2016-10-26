@@ -14,6 +14,7 @@ import butterknife.OnClick;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.acitivity.MainActivity;
+import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.dao.UserDao;
@@ -36,6 +37,8 @@ public class PresonalCenterFragment extends BaseFragment {
 
     MainActivity mContext;
     User user = null;
+    @Bind(R.id.tvGoodsColumn)
+    TextView tvGoodsColumn;
 
     @Nullable
     @Override
@@ -55,9 +58,9 @@ public class PresonalCenterFragment extends BaseFragment {
     @Override
     protected void initData() {
         user = FuLiCenterApplication.getUser();
-        L.e(TAG,"user =" +user);
-        if (user != null){
-            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user),mContext,ivAvatar);
+        L.e(TAG, "user =" + user);
+        if (user != null) {
+            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, ivAvatar);
             tvUsername.setText(user.getMuserNick());
             syncUserInfo();
         }
@@ -67,6 +70,7 @@ public class PresonalCenterFragment extends BaseFragment {
     protected void setListener() {
 
     }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -79,25 +83,26 @@ public class PresonalCenterFragment extends BaseFragment {
         ButterKnife.unbind(this);
     }
 
-    @OnClick({R.id.tvSettings,R.id.center_user_info})
+    @OnClick({R.id.tvSettings, R.id.center_user_info})
     public void gotoSettings() {
         MFGT.gotoSettings(mContext);
     }
+
     //用户资料的刷新
-    private void syncUserInfo(){
+    private void syncUserInfo() {
         NetDao.syncUserInfo(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<String>() {
             @Override
             public void onSuccess(String s) {
-                Result result = ResultUtils.getResultFromJson(s,User.class);
-                if (result != null){
+                Result result = ResultUtils.getResultFromJson(s, User.class);
+                if (result != null) {
                     User u = (User) result.getRetData();
-                    if (!user.equals(u)){
+                    if (!user.equals(u)) {
                         UserDao dao = new UserDao(mContext);
                         boolean b = dao.saveUser(u);
-                        if (b){
+                        if (b) {
                             FuLiCenterApplication.setUser(u);
                             user = u;
-                            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user),mContext,ivAvatar);
+                            ImageLoader.setAvatar(ImageLoader.getAvatarUrl(user), mContext, ivAvatar);
                             tvUsername.setText(user.getMuserName());
                         }
                     }
@@ -107,6 +112,26 @@ public class PresonalCenterFragment extends BaseFragment {
             @Override
             public void onError(String error) {
 
+            }
+        });
+    }
+
+    //获取商品数量
+    private void syncCollectsCount() {
+        NetDao.getCollectsCount(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+            @Override
+            public void onSuccess(MessageBean result) {
+                if (result != null && result.isSuccess()){
+                    tvGoodsColumn.setText(result.getMsg());
+                }else {
+                    tvGoodsColumn.setText(String.valueOf(0));
+                }
+            }
+
+            @Override
+            public void onError(String error) {
+                tvGoodsColumn.setText(String.valueOf(0));
+                L.e(TAG,"error = " +error);
             }
         });
     }
