@@ -76,6 +76,7 @@ public class PresonalCenterFragment extends BaseFragment {
     public void onResume() {
         super.onResume();
         initData();
+        syncCollectsCount();
     }
 
     @Override
