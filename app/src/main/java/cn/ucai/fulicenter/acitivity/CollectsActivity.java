@@ -160,4 +160,10 @@ public class CollectsActivity extends BaseActivity {
         }
         downloadCollects(I.ACTION_DOWNLOAD);
     }
+//取消收藏不能及时更新的解决方法
+    @Override
+    protected void onResume() {
+        super.onResume();
+        initData();
+    }
 }

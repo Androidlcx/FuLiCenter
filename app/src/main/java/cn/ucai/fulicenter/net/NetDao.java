@@ -163,10 +163,19 @@ public class NetDao {
                 .targetClass(MessageBean.class)
                 .execute(listener);
     }
-    //是否收藏指定商品
+    //判断是否收藏指定商品
     public static void isCollected(Context context, String username, int goodsId, OkHttpUtils.OnCompleteListener<MessageBean> listener){
         OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_IS_COLLECT)
+                .addParam(I.Collect.USER_NAME,username)
+                .addParam(I.Collect.GOODS_ID,String.valueOf(goodsId))
+                .targetClass(MessageBean.class)
+                .execute(listener);
+    }
+    //添加收藏商品
+    public static void addCollect(Context context, String username, int goodsId, OkHttpUtils.OnCompleteListener<MessageBean> listener){
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_ADD_COLLECT)
                 .addParam(I.Collect.USER_NAME,username)
                 .addParam(I.Collect.GOODS_ID,String.valueOf(goodsId))
                 .targetClass(MessageBean.class)

@@ -137,7 +137,48 @@ public class GoodsDetailActivity extends BaseActivity {
     public void onBackClick() {
         MFGT.finish(this);
     }
+  @OnClick(R.id.iv_goods_collect)
+  public void onCollectClick(){
+      User user = FuLiCenterApplication.getUser();
+      if (user == null){
+          MFGT.gotoLogin(mContext);
+      }else {
+          if (isCollected){
+              NetDao.deleteCollect(mContext, user.getMuserName(), goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                  @Override
+                  public void onSuccess(MessageBean result) {
+                      if (result != null && result.isSuccess()){
+                          isCollected = !isCollected;
+                          updateGoodsCollectStatus();
+                          CommonUtils.showLongToast(result.getMsg());
+                      }
+                  }
 
+                  @Override
+                  public void onError(String error) {
+
+                  }
+              });
+          }else {
+              NetDao.addCollect(mContext, user.getMuserName(), goodsId, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                  @Override
+                  public void onSuccess(MessageBean result) {
+                      if (result != null && result.isSuccess()){
+                          isCollected = !isCollected;
+                          updateGoodsCollectStatus();
+                          CommonUtils.showLongToast(result.getMsg());
+                      }
+
+                  }
+
+                  @Override
+                  public void onError(String error) {
+
+                  }
+              });
+          }
+      }
+  }
     //系统返回按钮
     public void back(View view) {
         MFGT.finish(this);
@@ -167,7 +208,6 @@ public class GoodsDetailActivity extends BaseActivity {
         }
         updateGoodsCollectStatus();//判断是否收藏的方法
     }
-
     private void updateGoodsCollectStatus() {
         if (isCollected) {
             ivGoodsCollect.setImageResource(R.mipmap.bg_collect_out);
