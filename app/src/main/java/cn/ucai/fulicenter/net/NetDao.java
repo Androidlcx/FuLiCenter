@@ -199,4 +199,12 @@ public class NetDao {
                 .targetClass(MessageBean.class)
                 .execute(listener);
     }
+    //减少和删除购物车商品数量
+    public static void deleteCart(Context context, int cartId,OkHttpUtils.OnCompleteListener<MessageBean> listener){
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_DELETE_CART)
+                .addParam(I.Cart.ID,String.valueOf(cartId))
+                .targetClass(MessageBean.class)
+                .execute(listener);
+    }
 }

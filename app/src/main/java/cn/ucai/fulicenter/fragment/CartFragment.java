@@ -27,14 +27,12 @@ import cn.ucai.fulicenter.View.SpaceItemDecoration;
 import cn.ucai.fulicenter.acitivity.MainActivity;
 import cn.ucai.fulicenter.adapter.CartAdapter;
 import cn.ucai.fulicenter.bean.CartBean;
-import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.L;
-import cn.ucai.fulicenter.utils.ResultUtils;
 
 public class CartFragment extends BaseFragment {
     @Bind(R.id.tv_refresh)
@@ -181,8 +179,8 @@ public class CartFragment extends BaseFragment {
             tvCartSumPrice.setText("合计:￥" + Double.valueOf(rankPrice));
             tvCartSavePrice.setText("节省:￥" + Double.valueOf(sumPrice - rankPrice));
         }else {
-            tvCartSumPrice.setText("合计:￥");
-            tvCartSavePrice.setText("结省:￥");
+            tvCartSumPrice.setText("合计:￥0");
+            tvCartSavePrice.setText("结省:￥0");
         }
     }
     private int getPrice(String price){
@@ -195,7 +193,8 @@ public class CartFragment extends BaseFragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             L.e("updateCartReceiver......");
-                   sumPrice();
+            sumPrice();
+            setCartLayout(mList != null && mList.size() > 0);
         }
     }
 //销毁广播

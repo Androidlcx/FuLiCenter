@@ -2,7 +2,6 @@ package cn.ucai.fulicenter.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
@@ -58,7 +57,7 @@ public class CartAdapter extends Adapter<CartAdapter.CartViewHolder> {
                  holder.tvCartPrice.setText(goods.getCurrencyPrice());
              }
              holder.ivCartCount.setText("("+cartBean.getCount()+")");
-             holder.cbCartSelected.setChecked(false);
+             holder.cbCartSelected.setChecked(cartBean.isChecked());
              holder.cbCartSelected.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                   @Override
                   public void onCheckedChanged(CompoundButton buttonView, boolean b) {
@@ -117,6 +116,43 @@ public class CartAdapter extends Adapter<CartAdapter.CartViewHolder> {
                 }
             });
 
+        }
+        //购物车里商品数量的减少和删除
+        @OnClick(R.id.iv_cart_del)
+        public void delCart(){
+            final int position = (int) ivCartAdd.getTag();
+            CartBean cart = mList.get(position);
+            if (cart.getCount() > 1){
+            NetDao.updateCart(mContext, cart.getId(), cart.getCount() - 1, new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+                    mList.get(position).setCount(mList.get(position).getCount() - 1);
+                    mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
+                    ivCartCount.setText("("+(mList.get(position).getCount())+")");
+                }
+
+                @Override
+                public void onError(String error) {
+
+                }
+            });
+            }else{
+                    NetDao.deleteCart(mContext, cart.getId(), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                        @Override
+                        public void onSuccess(MessageBean result) {
+                            if (result != null && result.isSuccess()){
+                                mList.remove(position);
+                                mContext.sendBroadcast(new Intent(I.BROADCAST_UPDATA_CART));
+                                notifyDataSetChanged();//刷新一下列表
+                            }
+                        }
+
+                        @Override
+                        public void onError(String error) {
+
+                        }
+                    });
+            }
         }
     }
 }
