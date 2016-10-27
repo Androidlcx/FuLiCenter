@@ -1,5 +1,9 @@
 package cn.ucai.fulicenter.fragment;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,6 +21,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.ucai.fulicenter.FuLiCenterApplication;
+import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.View.SpaceItemDecoration;
 import cn.ucai.fulicenter.acitivity.MainActivity;
@@ -52,6 +57,7 @@ public class CartFragment extends BaseFragment {
     @Bind(R.id.tv_nothing)
     TextView tvNothing;
 
+    updateCartReceiver mReceiver;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -70,6 +76,9 @@ public class CartFragment extends BaseFragment {
     @Override
     protected void setListener() {
         setPullDownListener();
+        IntentFilter filter = new IntentFilter(I.BROADCAST_UPDATA_CART);
+        mReceiver = new updateCartReceiver();
+        mContext.registerReceiver(mReceiver,filter);
     }
 
     //下拉刷新
@@ -103,8 +112,9 @@ public class CartFragment extends BaseFragment {
                     srl.setRefreshing(false);//不在刷新
                     tvRefresh.setVisibility(View.GONE);//提示不可见
                     if (list != null && list.size() > 0) {
-                        L.e("list[0]=" + list.get(0));
-                        mAdapter.initData(list);
+                        mList.clear();
+                        mList.addAll(list);
+                        mAdapter.initData(mList);
                         setCartLayout(true);
                     }else {
                         setCartLayout(false);
@@ -168,7 +178,7 @@ public class CartFragment extends BaseFragment {
                     rankPrice += getPrice(c.getGoods().getRankPrice())*c.getCount();
                 }
             }
-            tvCartSumPrice.setText("合计:￥" + Double.valueOf(sumPrice));
+            tvCartSumPrice.setText("合计:￥" + Double.valueOf(rankPrice));
             tvCartSavePrice.setText("节省:￥" + Double.valueOf(sumPrice - rankPrice));
         }else {
             tvCartSumPrice.setText("合计:￥");
@@ -178,5 +188,22 @@ public class CartFragment extends BaseFragment {
     private int getPrice(String price){
         price = price.substring(price.indexOf("￥")+1);
         return Integer.valueOf(price);
+    }
+    //接收到广播更新价钱
+    class updateCartReceiver extends BroadcastReceiver{
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            L.e("updateCartReceiver......");
+                   sumPrice();
+        }
+    }
+//销毁广播
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (mReceiver != null){
+            mContext.unregisterReceiver(mReceiver);
+        }
     }
 }
