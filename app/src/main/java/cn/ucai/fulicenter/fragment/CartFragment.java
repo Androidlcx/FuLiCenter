@@ -8,18 +8,21 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.ucai.fulicenter.FuLiCenterApplication;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.View.SpaceItemDecoration;
 import cn.ucai.fulicenter.acitivity.MainActivity;
 import cn.ucai.fulicenter.adapter.CartAdapter;
 import cn.ucai.fulicenter.bean.CartBean;
+import cn.ucai.fulicenter.bean.Result;
 import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
@@ -40,24 +43,35 @@ public class CartFragment extends BaseFragment {
     MainActivity mContext;
     CartAdapter mAdapter;
     ArrayList<CartBean> mList;
+    @Bind(R.id.tv_cart_sum_price)
+    TextView tvCartSumPrice;
+    @Bind(R.id.tv_cart_save_price)
+    TextView tvCartSavePrice;
+    @Bind(R.id.layout_cart)
+    RelativeLayout layoutCart;
+    @Bind(R.id.tv_nothing)
+    TextView tvNothing;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View layout = inflater.inflate(R.layout.fragment_newgoods, container, false);
+        View layout = inflater.inflate(R.layout.fragment_cart, container, false);
         ButterKnife.bind(this, layout);
         mContext = (MainActivity) getContext();
         mList = new ArrayList<>();
-        mAdapter = new CartAdapter(mContext,mList);
+        mAdapter = new CartAdapter(mContext, mList);
 //        initView();
 //        initData();//数据抓取
 //        setListener();
-        super.onCreateView(inflater,container,savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
         return layout;
     }
+
     @Override
     protected void setListener() {
         setPullDownListener();
     }
+
     //下拉刷新
     private void setPullDownListener() {
         srl.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -70,31 +84,40 @@ public class CartFragment extends BaseFragment {
         });
 
     }
+
     @Override
     protected void initData() {
         downloadCart();
     }
+
     private void downloadCart() {
         User user = FuLiCenterApplication.getUser();
-        if (user != null){
-            NetDao.downloadCart(mContext,user.getMuserName(), new OkHttpUtils.OnCompleteListener<String>() {
+        if (user != null) {
+            NetDao.downloadCart(mContext, user.getMuserName(), new OkHttpUtils.OnCompleteListener<CartBean[]>() {
                 @Override
-                public void onSuccess(String s) {
-                    ArrayList<CartBean> list = ResultUtils.getCartFromJson(s);
-                    L.e("result"+list);
+                public void onSuccess(CartBean[] s) {
+                    L.e("sssss==" +s);
+//                    ArrayList<CartBean> list = ResultUtils.getCartFromJson(s);
+                      ArrayList<CartBean> list = ConvertUtils.array2List(s);
+                    L.e("result=" + list);
                     srl.setRefreshing(false);//不在刷新
                     tvRefresh.setVisibility(View.GONE);//提示不可见
-                    if (list != null && list.size()>0){
+                    if (list != null && list.size() > 0) {
                         L.e("list[0]=" + list.get(0));
                         mAdapter.initData(list);
+                        setCartLayout(true);
+                    }else {
+                        setCartLayout(false);
                     }
                 }
+
                 @Override
                 public void onError(String error) {
+                    setCartLayout(false);
                     srl.setRefreshing(false);
                     tvRefresh.setVisibility(View.GONE);
                     CommonUtils.showLongToast(error);
-                    L.e("error"+error);
+                    L.e("error" + error);
                 }
             });
         }
@@ -106,6 +129,7 @@ public class CartFragment extends BaseFragment {
         super.onDestroyView();
         ButterKnife.unbind(this);
     }
+
     @Override
     protected void initView() {
         /*下拉刷新小圆圈的颜色*/
@@ -120,5 +144,39 @@ public class CartFragment extends BaseFragment {
         rv.setHasFixedSize(true);//修复图片大小
         rv.setAdapter(mAdapter);
         rv.addItemDecoration(new SpaceItemDecoration(12));//设置边距
+        setCartLayout(false);//购物车结算方法
+    }
+
+    private void setCartLayout(boolean hasCart) {
+        layoutCart.setVisibility(hasCart ? View.VISIBLE : View.GONE);
+        tvNothing.setVisibility(hasCart ? View.GONE : View.VISIBLE);
+        rv.setVisibility(hasCart ? View.VISIBLE : View.GONE);
+        sumPrice();
+    }
+
+    @OnClick(R.id.tv_cart_buy)
+    public void onClick() {
+    }
+    //结算的方法
+    private void sumPrice(){
+        int sumPrice = 0 ;
+        int rankPrice = 0 ;
+        if (mList != null && mList.size() >0){
+            for (CartBean c : mList){
+                if (c.isChecked()){
+                    sumPrice += getPrice(c.getGoods().getCurrencyPrice())*c.getCount();
+                    rankPrice += getPrice(c.getGoods().getRankPrice())*c.getCount();
+                }
+            }
+            tvCartSumPrice.setText("合计:￥" + Double.valueOf(sumPrice));
+            tvCartSavePrice.setText("节省:￥" + Double.valueOf(sumPrice - rankPrice));
+        }else {
+            tvCartSumPrice.setText("合计:￥");
+            tvCartSavePrice.setText("结省:￥");
+        }
+    }
+    private int getPrice(String price){
+        price = price.substring(price.indexOf("￥")+1);
+        return Integer.valueOf(price);
     }
 }
