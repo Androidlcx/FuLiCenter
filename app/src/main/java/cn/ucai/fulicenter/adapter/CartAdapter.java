@@ -17,6 +17,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.bean.CartBean;
+import cn.ucai.fulicenter.bean.GoodsDetailsBean;
+import cn.ucai.fulicenter.utils.ImageLoader;
 
 /**
  * 精选页面的Adapter
@@ -43,11 +45,14 @@ public class CartAdapter extends Adapter<CartAdapter.CartViewHolder> {
     public void onBindViewHolder(CartViewHolder holder, int position) {
         //数据填充
              CartBean cartBean = mList.get(position);
-//             ImageLoader.downloadImg(mContext,holder.ivBoutiqueImg,cartBean.getImageurl());
-//             holder.tvBoutiqueTitle.setText(cartBean.getTitle());
-//             holder.tvBoutiqueName.setText(cartBean.getName());
-//             holder.tvBoutiqueDescription.setText(cartBean.getDescription());
-//             holder.layoutBoutiqueItem.setTag(cartBean);//父类id
+             GoodsDetailsBean goods = cartBean.getGoods();
+             if (goods != null){
+                 ImageLoader.downloadImg(mContext,holder.ivCartThumb,goods.getGoodsThumb());
+                 holder.tvCartGoodName.setText(goods.getGoodsName());
+                 holder.tvCartPrice.setText(goods.getCurrencyPrice());
+             }
+             holder.ivCartCount.setText("("+cartBean.getCount()+")");
+             holder.cbCartSelected.setChecked(false);
     }
 
     @Override

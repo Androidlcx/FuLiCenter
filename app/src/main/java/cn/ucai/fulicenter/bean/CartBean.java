@@ -19,10 +19,10 @@ public class CartBean implements Serializable{
     private int id;
     private String userName;
     private int goodsId;
-    private Object goods;
     private int count;
     private boolean isChecked;
     private boolean checked;
+    private GoodsDetailsBean goods;
 
     public int getId() {
         return id;
@@ -48,11 +48,11 @@ public class CartBean implements Serializable{
         this.goodsId = goodsId;
     }
 
-    public Object getGoods() {
+    public GoodsDetailsBean getGoods() {
         return goods;
     }
 
-    public void setGoods(Object goods) {
+    public void setGoods(GoodsDetailsBean goods) {
         this.goods = goods;
     }
 
