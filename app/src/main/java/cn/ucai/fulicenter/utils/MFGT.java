@@ -69,6 +69,12 @@ public class MFGT {
         intent.setClass(context,LoginActivity.class);
         startActivityForResult(context,intent,I.REQUEST_CODE_LOGIN);
     }
+    //购物车跳转
+    public static void gotoLoginFromCatr(Activity context){
+        Intent intent = new Intent();
+        intent.setClass(context,LoginActivity.class);
+        startActivityForResult(context,intent,I.REQUEST_CODE_LOGIN_FROM_CART);
+    }
     //注册
     public static void gotoRegister(Activity context){
         Intent intent = new Intent();

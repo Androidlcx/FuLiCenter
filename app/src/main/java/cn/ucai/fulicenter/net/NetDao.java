@@ -6,6 +6,7 @@ import java.io.File;
 
 import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.bean.BoutiqueBean;
+import cn.ucai.fulicenter.bean.CartBean;
 import cn.ucai.fulicenter.bean.CategoryChildBean;
 import cn.ucai.fulicenter.bean.CategoryGroupBean;
 import cn.ucai.fulicenter.bean.CollectBean;
@@ -51,7 +52,6 @@ public class NetDao {
                 .targetClass(GoodsDetailsBean.class)
                 .execute(listener);//完成数据请求
     }
-
     //精选页面的数据请求
     public static void downloadBoutique(Context context, OkHttpUtils.OnCompleteListener<BoutiqueBean[]> listener) {
         OkHttpUtils<BoutiqueBean[]> utils = new OkHttpUtils(context);
@@ -179,6 +179,14 @@ public class NetDao {
                 .addParam(I.Collect.USER_NAME,username)
                 .addParam(I.Collect.GOODS_ID,String.valueOf(goodsId))
                 .targetClass(MessageBean.class)
+                .execute(listener);
+    }
+    //购物车的网络请求方法
+    public static void downloadCart(Context context, String username, OkHttpUtils.OnCompleteListener<CartBean[]> listener){
+        OkHttpUtils<CartBean[]> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_FIND_CARTS)
+                .addParam(I.Cart.USER_NAME,username)
+                .targetClass(CartBean[].class)
                 .execute(listener);
     }
 }
