@@ -26,24 +26,6 @@ public class NetDao {
                 .targetClass(NewGoodsBean[].class)
                 .execute(listener);
     }
-
-    //    public void temp(Context context){
-//        OkHttpUtils utils = new OkHttpUtils(context);
-//        utils.setRequestUrl(I.REQUEST_FIND_NEW_BOUTIQUE_GOODS)
-//                .addParam(I.PAGE_SIZE,String.valueOf(20))
-//                .targetClass(NewGoodsBean.class)
-//                .execute(new OkHttpUtils.OnCompleteListener() {
-//                    @Override
-//                    public void onSuccess(Object result) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onError(String error) {
-//
-//                    }
-//                });
-//    }
     //新品页面数据请求
     public static void downloadGoodsDetail(Context context, int goodsId, OkHttpUtils.OnCompleteListener<GoodsDetailsBean> listener) {
         OkHttpUtils<GoodsDetailsBean> utils = new OkHttpUtils(context);
@@ -204,6 +186,17 @@ public class NetDao {
         OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
         utils.setRequestUrl(I.REQUEST_DELETE_CART)
                 .addParam(I.Cart.ID,String.valueOf(cartId))
+                .targetClass(MessageBean.class)
+                .execute(listener);
+    }
+    //商品详情页面添加商品到购物车的点击事件
+    public static void addCart(Context context,String username,int goodsId, OkHttpUtils.OnCompleteListener<MessageBean> listener){
+        OkHttpUtils<MessageBean> utils = new OkHttpUtils<>(context);
+        utils.setRequestUrl(I.REQUEST_ADD_CART)
+                .addParam(I.Cart.USER_NAME,username)
+                .addParam(I.Cart.GOODS_ID,String.valueOf(goodsId))
+                .addParam(I.Cart.COUNT,String.valueOf(1))
+                .addParam(I.Cart.IS_CHECKED,String.valueOf(I.CART_CHECKED_DEFAULT))
                 .targetClass(MessageBean.class)
                 .execute(listener);
     }

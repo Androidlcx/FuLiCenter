@@ -33,6 +33,8 @@ import cn.ucai.fulicenter.net.OkHttpUtils;
 import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.L;
+import cn.ucai.fulicenter.utils.MD5;
+import cn.ucai.fulicenter.utils.MFGT;
 
 public class CartFragment extends BaseFragment {
     @Bind(R.id.tv_refresh)
@@ -56,6 +58,7 @@ public class CartFragment extends BaseFragment {
     TextView tvNothing;
 
     updateCartReceiver mReceiver;
+    String cartIds = "";
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -164,14 +167,21 @@ public class CartFragment extends BaseFragment {
 
     @OnClick(R.id.tv_cart_buy)
     public void onClick() {
+        if (cartIds != null && !cartIds.equals("") && cartIds.length() > 0){
+            MFGT.gotoBuy(mContext,cartIds);
+        }else {
+            CommonUtils.showLongToast(R.string.order_nothing);
+        }
     }
     //结算的方法
     private void sumPrice(){
+        cartIds = "";
         int sumPrice = 0 ;
         int rankPrice = 0 ;
         if (mList != null && mList.size() >0){
             for (CartBean c : mList){
                 if (c.isChecked()){
+                    cartIds += c.getId()+",";
                     sumPrice += getPrice(c.getGoods().getCurrencyPrice())*c.getCount();
                     rankPrice += getPrice(c.getGoods().getRankPrice())*c.getCount();
                 }
@@ -179,6 +189,7 @@ public class CartFragment extends BaseFragment {
             tvCartSumPrice.setText("合计:￥" + Double.valueOf(rankPrice));
             tvCartSavePrice.setText("节省:￥" + Double.valueOf(sumPrice - rankPrice));
         }else {
+            cartIds = "";
             tvCartSumPrice.setText("合计:￥0");
             tvCartSavePrice.setText("结省:￥0");
         }
@@ -204,5 +215,12 @@ public class CartFragment extends BaseFragment {
         if (mReceiver != null){
             mContext.unregisterReceiver(mReceiver);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        L.e("cartfagment  onResume 0.0.0.0.0.");
+        initData();
     }
 }

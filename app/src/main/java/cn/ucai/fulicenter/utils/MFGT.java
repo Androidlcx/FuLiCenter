@@ -14,6 +14,7 @@ import cn.ucai.fulicenter.acitivity.CollectsActivity;
 import cn.ucai.fulicenter.acitivity.GoodsDetailActivity;
 import cn.ucai.fulicenter.acitivity.LoginActivity;
 import cn.ucai.fulicenter.acitivity.MainActivity;
+import cn.ucai.fulicenter.acitivity.OrderActivity;
 import cn.ucai.fulicenter.acitivity.RegisterActivity;
 import cn.ucai.fulicenter.acitivity.UpdateNickActivity;
 import cn.ucai.fulicenter.acitivity.UserProfileActivity;
@@ -98,5 +99,10 @@ public class MFGT {
     //跳转到收藏界面的方法
     public static void gotoCollects(Activity context){
         startActivity(context, CollectsActivity.class);
+    }
+    //购物车商品界面跳转到支付界面
+    public static void gotoBuy(Activity context,String cartIds){
+           Intent intent = new Intent(context, OrderActivity.class).putExtra(I.Cart.ID,cartIds);
+            startActivity(context,intent);
     }
 }
