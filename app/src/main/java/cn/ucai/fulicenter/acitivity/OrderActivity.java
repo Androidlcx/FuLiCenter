@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.pingplusplus.android.PingppLog;
+import com.pingplusplus.libone.PaySuccessActivity;
 import com.pingplusplus.libone.PaymentHandler;
 import com.pingplusplus.libone.PingppOne;
 
@@ -28,9 +29,11 @@ import cn.ucai.fulicenter.I;
 import cn.ucai.fulicenter.R;
 import cn.ucai.fulicenter.View.DisplayUtils;
 import cn.ucai.fulicenter.bean.CartBean;
+import cn.ucai.fulicenter.bean.MessageBean;
 import cn.ucai.fulicenter.bean.User;
 import cn.ucai.fulicenter.net.NetDao;
 import cn.ucai.fulicenter.net.OkHttpUtils;
+import cn.ucai.fulicenter.utils.CommonUtils;
 import cn.ucai.fulicenter.utils.ConvertUtils;
 import cn.ucai.fulicenter.utils.L;
 
@@ -221,6 +224,35 @@ public class OrderActivity extends BaseActivity implements PaymentHandler{
                     e.printStackTrace();
                 }
             }
+            //支付成功与否的后续逻辑处理方法
+            int resultCode = data.getExtras().getInt("code");
+            switch (resultCode){
+                case 1:
+                    PaySuccess();//删除已经支付成功的界面调用
+                    CommonUtils.showLongToast(R.string.pingpp_title_activity_pay_sucessed);
+                    break;
+                case -1:
+                    CommonUtils.showLongToast(R.string.pingpp_pay_failed);
+                    finish();
+                    break;
+            }
         }
+    }
+//删除已经支付成功的界面
+    private void PaySuccess() {
+        for (String id : ids){
+            NetDao.deleteCart(mContext,Integer.valueOf(id), new OkHttpUtils.OnCompleteListener<MessageBean>() {
+                @Override
+                public void onSuccess(MessageBean result) {
+                    L.e("result=="+result);
+                }
+
+                @Override
+                public void onError(String error) {
+
+                }
+            });
+        }
+        finish();//关掉当前页面
     }
 }

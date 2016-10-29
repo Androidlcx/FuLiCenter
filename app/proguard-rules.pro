@@ -15,3 +15,24 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+-dontwarn com.alipy.**
+-keep class com.alipy.** {*;}
+
+-dontwarn com.ta.utdid2.**
+-keep class com.ta.utdid2.** {*;}
+
+-dontwarn com.ut.device.**
+-keep class com.ut.device.** {*;}
+
+-dontwarn com.tencent.**
+-keep class com.tencent.** {*;}
+
+-dontwarn com.unionpay.**
+-keep class com.unionpay.** {*;}
+
+-dontwarn com.baidu.**
+-keep class com.baidu.** {*;}
+
+-keepclassmembers class * {
+     @android.webkit.JavascriptInterface <methods>;
+}
